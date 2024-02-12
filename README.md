@@ -46,4 +46,14 @@ Non-functional Requirements:
 3. System should update its data daily 
 4. The system should be able to handle large volumes of data and user queries with minimal latency. 
 5. Predicted data should be returned almost instantly 
-6. The system should be scalable, both in terms of handling an increasing amount of data over time and accommodating a growing number of users. 
+6. The system should be scalable, both in terms of handling an increasing amount of data over time and accommodating a growing number of users.
+
+
+## Product Development Plan
+
+Week 1: Data Collection and Preprocessing		[ Feb 12 - Feb 16 ]
+Week 2: Model Development 			            [ Feb 19 - Feb 23 ]
+Week 3: Initial Format of Platform			    [ Feb 26 - Mar 01 ]
+
+Prototype Demonstration Day:                [ March 4th, 1pm ]
+
