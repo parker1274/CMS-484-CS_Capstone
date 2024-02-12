@@ -51,9 +51,9 @@ Non-functional Requirements:
 
 ## Product Development Plan
 
-Week 1: Data Collection and Preprocessing		[ Feb 12 - Feb 16 ]   
-Week 2: Model Development 			            [ Feb 19 - Feb 23 ]   
-Week 3: Initial Format of Platform			    [ Feb 26 - Mar 01 ]   
+Week 1: Data Collection and Preprocessing,		[ Feb 12 - Feb 16 ]   
+Week 2: Model Development, 			            [ Feb 19 - Feb 23 ]   
+Week 3: Initial Format of Platform,			    [ Feb 26 - Mar 01 ]   
 
 Prototype Demonstration Day:                [ March 4th, 1pm ]   
 
