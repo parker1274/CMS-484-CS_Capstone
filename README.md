@@ -56,3 +56,8 @@ Week 3: Initial Format of Platform,			    [ Feb 26 - Mar 01 ]
 
 Prototype Demonstration Day:                [ March 4th, 1pm ]   
 
+
+## Resources
+
+NBA Data Github: https://github.com/swar/nba_api/blob/master/docs/examples/Basics.ipynb
+
