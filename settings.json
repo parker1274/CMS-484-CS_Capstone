@@ -11,6 +11,6 @@
     "python.analysis.diagnosticSeverityOverrides": {
         "reportUnboundVariable": "information",
         "reportImplicitStringConcatenation": "warning",
-        "reportUntypedFunctionDecorator": "information",
+        "reportUntypedFunctionDecorator": "information"
     }
 }
