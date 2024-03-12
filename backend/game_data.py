@@ -19,7 +19,7 @@ def fetch_and_export_team_data(team_abbreviation, season):
 
     # Optionally, filter the DataFrame further if needed (e.g., home games, wins, etc.)
 
-    return games
+    # return games
 
     # Export to CSV
     csv_filename = f'{team_abbreviation}_{season}_games.csv'
@@ -62,8 +62,8 @@ def team_match_up_stats(team_abbreviation1, team_abbreviation2, season):
 
 
 
-# Example usage
-team_match_up_stats('BOS', 'NYK')
+# # Example usage
+# team_match_up_stats('BOS', 'NYK')
 
     
        
@@ -71,5 +71,5 @@ team_match_up_stats('BOS', 'NYK')
 
 
 
-
+fetch_and_export_team_data('BOS', '2022-23')
 
