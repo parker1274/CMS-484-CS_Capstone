@@ -51,23 +51,5 @@ def individual_game_stats(game_id):
 
 
 
-    return game_df, combined_team_stats_df
-
-
-
-# save_dict_as_json(game_data, 'game_stats1')
-
-# data_for_export = {
-#     "game_df": game_df,
-#     "arena_df": arena_df,
-#     "away_team_df": away_team_df,
-#     "away_team_player_stats_df": away_team_player_stats_df,
-#     "away_team_stats": away_team_stats,
-#     "home_team_df": home_team_df,
-#     "home_team_player_stats_df": home_team_player_stats_df,
-#     "home_team_stats": home_team_stats
-# }
-
-# pd.to_pickle(data_for_export, "all_data.pkl")
-
-# print(data_for_export)
+    return game_df
+    # return game_data

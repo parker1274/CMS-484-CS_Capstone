@@ -27,7 +27,6 @@ def fetch_game_ids(team_abbreviation, season):
 
     return game_ids
 
-
 def fetch_and_export_team_data(team_abbreviation, season):
     # Get dictionary of NBA teams
     nba_teams = teams.get_teams()
@@ -75,28 +74,6 @@ def export_all_team_data(season):
     all_teams_data.to_csv(csv_filename, index=False)
     print(f"All teams' data exported to {csv_filename}")
 
-
-def team_match_up_stats(team_abbreviation1, team_abbreviation2, season):
-    
-    # Run fetch_and_export_team_data for both teams
-    team1_data = fetch_and_export_team_data(team_abbreviation1, season)
-    team2_data = fetch_and_export_team_data(team_abbreviation2, season)
-
-    team2_data.columns = ['OPP_' + col for col in team2_data.columns]
-    # print(team2_data.columns)
-
-
-    combined_data = pd.concat([team1_data, team2_data], axis=1)
-
-    # Export to CSV
-    csv_filename = f'{team_abbreviation1}_{team_abbreviation2}_{season}_games.csv'
-    combined_data.to_csv(csv_filename, index=False)
-    print(f"Data exported to {csv_filename}")
-
-    
-
-
-
 def additional_stats(team_abbreviation, season):
 
     df = fetch_and_export_team_data(team_abbreviation, season)
@@ -112,17 +89,3 @@ def additional_stats(team_abbreviation, season):
     print(f"Total Games: {total_games}")
     print(f"Wins: {wins}")
     print(f"Losses: {losses}")
-
-
-
-
-
-
-# team_match_up_stats('BOS', 'PHI', '2022-23')    
-       
-fetch_game_ids('BOS', '2022-23')
-
-
-
-# additional_stats('BOS', '2022-23')
-
