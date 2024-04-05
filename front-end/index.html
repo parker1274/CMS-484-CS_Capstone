@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction App</title>
+</head>
+<body>
+    <h1>Prediction Request</h1>
+    <form id="predictionForm">
+        <label for="params">Enter Parameters (JSON format):</label>
+        <input type="text" id="params" name="params" value='["Game Outcome", "BOS", "NYK", "2023-24", "3", "15"]'>
+        <button type="submit">Get Prediction</button>
+    </form>
+    <div id="predictionResult"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
