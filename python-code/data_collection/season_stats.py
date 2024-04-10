@@ -8,8 +8,8 @@ import time
 from scipy.stats import randint
 import shap
 
-import season_gen_data 
-import game_stats
+from data_collection.season_gen_data import fetch_game_ids
+from data_collection.game_stats import individual_game_stats
 
 
 
@@ -20,7 +20,7 @@ import game_stats
 def all_game_stats_export(team_abbreviation, season):
 
     # Get all the game ids for the 2022-23 season for stat collection
-    game_ids = season_gen_data.fetch_game_ids(team_abbreviation, season)
+    game_ids = fetch_game_ids(team_abbreviation, season)
 
     all_game_stats_list = [ ]
 
@@ -30,7 +30,7 @@ def all_game_stats_export(team_abbreviation, season):
 
     for game in game_ids:
 
-        game_df = game_stats.individual_game_stats(game)
+        game_df = individual_game_stats(game)
 
         # Check if the selected team is home or away
         if game_df['homeTeam'].iloc[0]['teamTricode'] == team_abbreviation:
