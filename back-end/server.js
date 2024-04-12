@@ -13,22 +13,24 @@ app.get('/example', (req, res) => {
 
 // JS functions to process the users requests -------------------------
 
-// Outcome prediction function
+// Import outcome prediction function
 const { predictionRequest } = require('./python-request');
 
-// Actionable data function
-// const { actionableDataRequest } = require();
+// Import actionable data function
+const { actionableDataRequest } = require('./python-request');
 
-// 
+// Import team performance insight (tpi) function
+const { tpiRequest } = require('./python-request');
 
 
 
 
+// Prediction function call
 app.get('/prediction', async (req, res) => {
     console.log("Prediction endpoint hit", req.query);
 
     try {
-        const predictionArgs = req.query.params ? JSON.parse(req.query.params) : ['Game Outcome', 'BOS', 'NYK', '2023-24', '3', '14'];
+        const predictionArgs = JSON.parse(req.query.params);
 
         console.log()
 
@@ -40,31 +42,51 @@ app.get('/prediction', async (req, res) => {
         res.json({ prediction });
     } catch (error) {
         res.status(500).json({ error: error.message });
-        console.log("Error!")
+        console.log("Error relating to prediction function call on the server")
     }
 });
 
-// app.get('/actionable-data', async (req, res) => {
-//     console.log("Actionable-data endpoint hit", req.query);
+// Actionable data function call
+app.get('/actionable-data', async (req, res) => {
+    console.log("Actionable-data endpoint hit", req.query);
 
-//     try {
-//         actionableArgs = JSON.parse(req.query.params);
+    try {
+        actionableArgs = JSON.parse(req.query.params);
 
-//         console.log()
+        console.log()
 
-//         const actionableData = await predictionRequest(predictionArgs);
+        const actionableData = await actionableDataRequest(actionableArgs);
 
-//         console.log("Prediction values (server): ")
-//         console.log(prediction);
+        console.log("Actionable data values (server): ")
+        console.log(actionableData);
 
-//         res.json({ prediction });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//         console.log("Error!")
-//     }
-// });
+        res.json({ actionableData });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+        console.log("Error relating to actionable data function call on the server")
+    }
+});
 
+// Team Performance Insight function call
+app.get('/team-performance-insight', async (req, res) => {
+    console.log("TPI endpoint hit", req.query);
 
+    try {
+        tpiArgs = JSON.parse(req.query.params);
+
+        console.log()
+
+        const tpiData = await tpiRequest(actionableArgs);
+
+        console.log("TPI values (server): ")
+        console.log(tpiData);
+
+        res.json({ tpiData });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+        console.log("Error relating to TPI function call on the server")
+    }
+});
 
 
 
