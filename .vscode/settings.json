@@ -2,6 +2,7 @@
     "python.analysis.extraPaths": [
         "./backend/data_collection",
         "./python_code/data_collection",
-        "./python-code/data_collection"
+        "./python-code/data_collection",
+        "./python_code/model_creation"
     ]
 }
