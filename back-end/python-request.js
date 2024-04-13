@@ -1,14 +1,24 @@
 const { spawn } = require('child_process');
+const path = require('path');
 
 
 // Outcome prediction function
 function predictionRequest(params) {
   return new Promise((resolve, reject) => {
-    const pythonProcess = spawn('python3', ['./python-files/main.py', ...params]);
+
+    const pythonScriptPath = '/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/run_models.py';
+
+    // const pythonProcess = spawn('python3', ['./python-files/main.py', ...params]);
+
+    console.log(pythonScriptPath)
+
+    const pythonProcess = spawn('python3', [pythonScriptPath, ...params]);
+
 
     let outputData = '';
     pythonProcess.stdout.on('data', (data) => {
       outputData += data.toString();
+      console.log(outputData)
     });
 
     pythonProcess.stderr.on('data', (data) => {

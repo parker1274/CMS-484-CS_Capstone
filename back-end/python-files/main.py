@@ -13,7 +13,7 @@ import feature_avgs
 
 
 # Convert arguments to integers
-predictionType = sys.argv[1]
+model_type = sys.argv[1]
 TeamA_abbreviation = sys.argv[2]
 TeamB_abbreviation = sys.argv[3]
 season = sys.argv[4]

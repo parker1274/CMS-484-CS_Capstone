@@ -11,30 +11,43 @@ Will take the following inputs:
 """
 
 import pandas as pd
+import json
+import sys
 from joblib import dump, load
 
 from data_collection.feature_avgs import feature_avgs, season_avgs
 from data_collection.season_stats import all_game_stats_export
 
+model_type = sys.argv[1]
+TeamA_abbreviation = sys.argv[2]
+TeamB_abbreviation = sys.argv[3]
+season = sys.argv[4]
+try:
+    number_seasons = int(sys.argv[5])
+except (ValueError, IndexError) as e:
+    print(f"Error converting input to integer: {e}")
+    sys.exit(1)
+number_past_games = int(sys.argv[6])
 
+# print(TeamA_abbreviation)
 
 def run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games):
 
 
-    print(model_type)
-    print(TeamA_abbreviation)
+    # print(model_type)
+    # print(TeamA_abbreviation)
 
     # Check which model is to be created
     if (model_type == "classifier"):
-        print(f"Running a classifier model for {TeamA_abbreviation}")
+        # print(f"Running a classifier model for {TeamA_abbreviation}")
         process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
     
     elif (model_type == "regressor"):
-        print(f"Running a regressor model for {TeamA_abbreviation}")
+        # print(f"Running a regressor model for {TeamA_abbreviation}")
         process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
 
-    else:
-        print("The model type entered was not found.")
+    # else:
+        # print("The model type entered was not found.")
 
 
 def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games):
@@ -140,31 +153,47 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
     # Assuming input_data is a pandas Series
     input_data_df = input_data.to_frame().T  # Transposes the Series to a DataFrame
 
-    print(f"Average data over the past {number_past_games}.")
-    print(input_data_df)
+    # print(f"Average data over the past {number_past_games}.")
+    # print(input_data_df)
 
 
     # # Drop the columns that aren't features the model was trained on
     input_data_df.drop(['pointsAgainst_diff', 'pointsAgainst_ratio', 'points_diff', 'points_ratio'], axis=1, inplace=True)
 
-    print(input_data_df)
+    # print(input_data_df)
 
 
     # Make predictions and retrieve probabilities
     prediction = model.predict(input_data_df)
     probabilities = model.predict_proba(input_data_df)
 
-    # Output the model's prediction
-    if prediction[0] == 1:
-        print(f"The model predicts a win for the team with a probability of {probabilities[0][1]:.2%}.")
-    else:
-        print(f"The model predicts a loss for the team with a probability of {probabilities[0][0]:.2%}.")
+    # # Output the model's prediction
+    # if prediction[0] == 1:
+    #     print(f"The model predicts a win for the team with a probability of {probabilities[0][1]:.2%}.")
+    # else:
+    #     print(f"The model predicts a loss for the team with a probability of {probabilities[0][0]:.2%}.")
 
-    # Display both probabilities for clarity
-    print(f"Win Probability: {probabilities[0][1]:.8%}")
-    print(f"Loss Probability: {probabilities[0][0]:.8%}")
+    # # Display both probabilities for clarity
+    # print(f"Win Probability: {probabilities[0][1]:.8%}")
+    # print(f"Loss Probability: {probabilities[0][0]:.8%}")
 
-    print(probabilities)
+    # print(probabilities)
+
+    # Construct the dictionary with the relevant information
+    result_data = {
+        "prediction_outcome": "Win" if prediction[0] == 1 else "Loss",
+        "prediction_probability": f"{probabilities[0][1]:.2%}" if prediction[0] == 1 else f"{probabilities[0][0]:.2%}",
+        "probabilities": {
+            "win_probability": f"{probabilities[0][1]:.8%}",
+            "loss_probability": f"{probabilities[0][0]:.8%}"
+        }
+    }
+
+
+
+    # Use json.dumps() to convert the dictionary to a JSON string
+    # and print it so that Node.js can capture the output
+    print(json.dumps(result_data))
 
 
 
@@ -252,6 +281,10 @@ def process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbrevia
     print(f"Game Estimated Stats:")
     print(f"Team A - Points: {estimated_teamA_points}, Assists: {estimated_teamA_assists}, Rebounds: {estimated_teamA_rebounds}")
     print(f"Team B - Points: {estimated_teamB_points}, Assists: {estimated_teamB_assists}, Rebounds: {estimated_teamB_rebounds}\n")
+
+
+
+run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
 
 
 # print("Classifier Model:")

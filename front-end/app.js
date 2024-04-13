@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Prevent form from submitting the traditional way
 
         const paramsInput = document.getElementById('params').value;
+
+        console.log(paramsInput)
         fetchPrediction(paramsInput);
     });
 
@@ -36,3 +38,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const radios = document.querySelectorAll('input[type="radio"]');
+  radios.forEach(radio => {
+    radio.addEventListener('change', function() {
+        selected_prediction = this.value;
+        console.log(selected_prediction)
+    });
+  });
+});
+
+
