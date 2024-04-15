@@ -1,56 +1,69 @@
 """
 Main file for calling run_models.py & create_models.py
 """
-import json
-import sys
-
 from create_models import create_model
 from run_models import run_model
+from aws_lambda_powertools import Logger
+import json
 
+LOGGER = Logger(level="DEBUG")
 
+class InvalidRequestBodyError(Exception):
+    pass
 
-# action, model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games
-action = 1 # 0 for create & 1 for run
-model_type = "classifier"
-TeamA_abbreviation = "BOS"
-TeamB_abbreviation = "NYK"
-season = "2023-24"
-number_seasons = 3
-# Number of past games used to create the average stats
-number_past_games = 15
+class IncorrectActionRequestError(Exception):
+    pass
 
-# action = 1
-# model_type = sys.argv[1]
-# TeamA_abbreviation = sys.argv[2]
-# TeamB_abbreviation = sys.argv[3]
-# season = sys.argv[4]
-# try:
-#     number_seasons = int(sys.argv[5])
-# except (ValueError, IndexError) as e:
-#     print(f"Error converting input to integer: {e}")
-#     sys.exit(1)
-# number_past_games = int(sys.argv[6])
+def lambda_handler(event, _):
+    """
+    Expected event:
+    {
+        "action": 1,
+        "model_type": "classifier",
+        "TeamA_abbreviation": "BOS",
+        "TeamB_abbreviation": "NYK",
+        "season": "2023-24",
+        "number_seasons": 3,
+        "number_past_games": 15
+    }
 
-# print(TeamA_abbreviation)
+    To run use:
+    curl https://qr7cldaha9.execute-api.us-east-1.amazonaws.com \
+    -H "Content-Type: application/json" \
+    -d '{"action": "1", "model_type": "classifier", "TeamA_abbreviation": "BOS", "TeamB_abbreviation": "NYK", "season": "2023-24", "number_seasons": "3", "number_past_games": "15"}'
+    """
+    # event = json.loads(event)
+    # try:
+    body = json.loads(event["body"])
+    action = int(body["action"])
+    model_type = body["model_type"]
+    TeamA_abbreviation = body["TeamA_abbreviation"]
+    TeamB_abbreviation = body["TeamB_abbreviation"]
+    season = body["season"]
+    number_seasons = int(body["number_seasons"])
+    number_past_games = int(body["number_past_games"])
+    # except Exception as e:
+        # raise InvalidRequestBodyError(f"You need to pass parameters. Error: {e}")
 
+    LOGGER.info("Received event: " + json.dumps(body))
 
+    if (action == 0):
+        LOGGER.debug("Creating model")
+        output = create_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons)
+    elif (action == 1):
+        LOGGER.debug("Running model")
+        output = run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
+    else:
+        raise IncorrectActionRequestError("Incorrect action request")
 
-# print("TEST")
+    # Return the output as a JSON object by using json.dumps()
+    # And a status code of 200 to indicate success
+    return {
+        "statusCode": 200,
+        "body": json.dumps(output)
+    }
 
-if (action == 0):
-    print("Creating model")
-    create_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons)
-
-elif (action == 1):
-    # print("Running model")
-    run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
-
-else:
-    print("Incorrect action request")
-
-
-
-
-
-
+if __name__ == "__main__":
+    # Test the lambda_handler function
+    lambda_handler('{"body": {"action": "1","model_type": "classifier","TeamA_abbreviation": "BOS","TeamB_abbreviation": "NYK","season": "2023-24","number_seasons": "3","number_past_games": "15"}}', None)
 
