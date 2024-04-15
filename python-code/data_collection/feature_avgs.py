@@ -3,7 +3,6 @@ Calculate the averages of features
 """
 
 import pandas as pd
-import season_gen_data
 
 
 
@@ -20,6 +19,16 @@ def feature_avgs(game_dataframe, num_previous_games):
 
 
     average_values_df = selected_games_df.select_dtypes(include=['number']).mean()
+
+
+    return average_values_df
+
+
+def season_avgs(game_dataframe):
+
+    df = game_dataframe
+
+    average_values_df = df.select_dtypes(include=['number']).mean()
 
 
     return average_values_df

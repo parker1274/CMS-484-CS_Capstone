@@ -1,12 +1,12 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const app = express();
 app.use(cors()); // Enable CORS
 app.use(express.json()); // Middleware to parse JSON bodies
 
-app.get('/example', (req, res) => {
-    res.json({ message: "This is data from the backend." });
-});
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 
@@ -28,6 +28,7 @@ const { tpiRequest } = require('./python-request');
 // Prediction function call
 app.get('/prediction', async (req, res) => {
     console.log("Prediction endpoint hit", req.query);
+    console.log(JSON.parse(req.query.params));
 
     try {
         const predictionArgs = JSON.parse(req.query.params);
