@@ -38,8 +38,11 @@ def run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number
     # print(TeamA_abbreviation)
 
     # Check which model is to be created
-    if (model_type == "classifier"):
+    if (model_type == "gamePrediction"):
         # print(f"Running a classifier model for {TeamA_abbreviation}")
+
+        model_type = "classifier"
+
         process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
     
     elif (model_type == "regressor"):
@@ -56,7 +59,7 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
 
     model = load(model_path)
 
-
+    
 
     TeamA_abbreviation = TeamA_abbreviation
     TeamB_abbreviation = TeamB_abbreviation
@@ -191,6 +194,11 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
 
 
 
+
+
+
+
+
     # Use json.dumps() to convert the dictionary to a JSON string
     # and print it so that Node.js can capture the output
     print(json.dumps(result_data))
@@ -292,3 +300,4 @@ run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_sea
 
 # print("Regressor Model:")
 # process_predicted_stats_model("regressor", "BOS", "NYK", "2023-24", 3, 15)
+

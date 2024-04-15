@@ -10,9 +10,22 @@ function predictionRequest(params) {
 
         // const pythonProcess = spawn('python3', ['./python-files/main.py', ...params]);
 
-        console.log(pythonScriptPath)
+        console.log(pythonScriptPath);
 
-        const pythonProcess = spawn('python3', [pythonScriptPath, ...params]);
+        // Extracting only the values from the JSON object
+        const valuesArray = Object.values(params);
+
+        // Option 1: Convert the array of values to a single string
+        const valuesString = valuesArray.join(', ');
+        console.log("Single string of values:", valuesString);
+
+        // Option 2: JSON string of the values array
+        const jsonValuesString = JSON.stringify(valuesArray);
+        console.log("JSON string of values:", jsonValuesString);
+        const argsArray = JSON.parse(jsonValuesString); // Convert it to an actual array
+
+
+        const pythonProcess = spawn('python3', [pythonScriptPath, ...argsArray]);
 
 
         let outputData = '';
