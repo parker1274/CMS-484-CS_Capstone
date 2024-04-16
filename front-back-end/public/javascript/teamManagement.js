@@ -32,10 +32,18 @@ const teams = [
     { value: "WAS", name: "Washington Wizards" }
 ];
 
-
 // Function to add teams to a select element
 export function populateTeamSelect(selectId) {
     const select = document.getElementById(selectId);
+    // Create and add the placeholder option
+    const placeholderOption = document.createElement('option');
+    placeholderOption.textContent = 'Select a team';
+    placeholderOption.value = '';
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true;
+    select.appendChild(placeholderOption);
+
+    // Add team options from the array
     teams.forEach(team => {
         const option = document.createElement('option');
         option.value = team.value;

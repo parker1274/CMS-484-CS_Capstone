@@ -6,9 +6,11 @@ import matplotlib.pyplot as plt
 from sklearn.tree import export_graphviz
 from joblib import dump, load
 import time
+import pathlib
 
-# import sys
-# sys.path.append('/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/data_collection')
+PARENT_PATH = pathlib.Path(__file__).parent.absolute()
+print("Parent Path:", PARENT_PATH)
+
 
  
 from model_creation.model_functions import remove_prefix, differential_ratio_features, grid_hyperparameter
@@ -171,7 +173,7 @@ def game_outcome_model(TeamA_abbreviation, TeamB_abbreviation, season, number_se
 
     def export_df_diff_ratio(dataframe):
 
-        dataframe.to_pickle(f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/pickle_dataframes/df_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season.pkl")
+        dataframe.to_pickle(f"{PARENT_PATH}/pickle_dataframes/df_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season.pkl")
 
 
     export_df_diff_ratio(df_diff_ratio)

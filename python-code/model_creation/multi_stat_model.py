@@ -1,16 +1,11 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.tree import DecisionTreeClassifier, plot_tree
-from sklearn.metrics import accuracy_score
-import matplotlib.pyplot as plt
-from sklearn.tree import export_graphviz
 from joblib import dump, load
 import time
-
 
 from data_collection.season_stats import multi_season_data_export
 from data_collection.feature_avgs import feature_avgs
 from model_creation.model_functions import remove_prefix, differential_ratio_features
+
 
 def predicted_stats_model(TeamA_abbreviation, TeamB_abbreviation, season, number_seasons):
 

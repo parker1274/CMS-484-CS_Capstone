@@ -37,7 +37,6 @@ export function initFormHandling() {
         fetchPrediction(paramsInputString);
     });
 
-
     function fetchPrediction(paramsInput) {
         const url = new URL('http://localhost:3000/prediction');
         url.search = new URLSearchParams({params: paramsInput});
@@ -58,9 +57,4 @@ export function initFormHandling() {
                 resultDiv.innerHTML = `<p>Error fetching prediction: ${error}</p>`;
             });
     }
-
-
-
-
-
 }

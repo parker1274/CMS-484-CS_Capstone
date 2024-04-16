@@ -12,11 +12,6 @@ from data_collection.season_gen_data import fetch_game_ids
 from data_collection.game_stats import individual_game_stats
 
 
-
-
-
-
-
 def all_game_stats_export(team_abbreviation, season):
 
     # Get all the game ids for the 2022-23 season for stat collection
@@ -122,17 +117,3 @@ def multi_season_data_export(team_abbreviation, season, num_seasons, team_identi
 
     # Return the final multi season DF
     return multi_season_DF
-
-
-
-
-
-# test = multi_season_data_export('BOS', '2023-24', 1, 0)
-
-# names = test.columns
-
-# print(names)
-
-# # Shape of the DataFrame
-# print("Shape of DataFrame:", test.shape)
-

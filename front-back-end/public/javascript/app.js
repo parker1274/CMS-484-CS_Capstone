@@ -41,10 +41,4 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     console.log(data);  // You can view the combined data in the console
-    
-
-
-
-
-
 });

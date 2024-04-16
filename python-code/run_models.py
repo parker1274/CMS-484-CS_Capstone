@@ -51,7 +51,7 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
     number_past_games = number_past_games
 
     # ADD MORE SEASONS -------
-    pickle_file_path = f"{PARENT_PATH}/pickle_dataframes/df_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season.pkl"
+    pickle_file_path = f"{PARENT_PATH}/model_creation/pickle_dataframes/df_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season.pkl"
     df = pd.read_pickle(pickle_file_path)
     df.drop(['TeamA_WL'], axis=1, inplace=True)
 

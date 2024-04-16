@@ -7,12 +7,6 @@
     </head>
 <body>
     <h1>Prediction Request</h1>
-    <form id="predictionForm">
-        <label for="params">Enter Parameters (JSON format):</label>
-        <input type="text" id="params" name="params" value='["classifier", "BOS", "NYK", "2023-24", "3", "15"]'>
-        <button type="submit">Get Prediction</button>
-    </form>
-
     <form>
         <p>Prediction type:</p>
         <div>
@@ -38,9 +32,10 @@
         <label for="teamSelect2">Select team for the matchup:</label>
         <select id="teamSelect2"></select>
     </form>
-
-      
-
+    
+    <form id="predictionForm">
+        <button type="submit">Get Prediction</button>
+    </form>
 
     <div id="predictionResult"></div>
 

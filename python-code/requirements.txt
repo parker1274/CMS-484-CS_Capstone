@@ -1,0 +1,8 @@
+scikit-learn~=1.4.1.post1
+matplotlib==3.8.3
+shap==0.45.0
+jmespath==1.0.1
+nba_api==1.4.1
+seaborn==0.13.2
+pandas==2.2.0
+aws_lambda_powertools==2.6.0
