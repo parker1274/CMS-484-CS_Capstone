@@ -1,0 +1,38 @@
+Documentation for efe_realtime_model.py:
+
+Overview: efe_realtime_model.py is a Python script designed for building and evaluating decision tree models based on NBA game statistics. 
+The script utilizes the nba_api to fetch game logs and other statistics, uses this data to train decision tree regressors, and saves the models 
+for future predictions. 
+It targets two main functionalities: 
+-	Building a decision tree model for a specified team. 
+-	Building a decision tree model focused on understanding what works best against a specified opponent team.
+
+Functions:
+build_decision_tree_for_team(team_abbreviation)
+Purpose: Builds and saves a decision tree model for a specified NBA team over multiple seasons. It analyzes how different game statistics 
+like field goal attempts (FGA) and personal fouls (PF) affect the game's plus-minus outcome.
+Inputs:
+team_abbreviation: The abbreviation of the team (e.g., 'OKC' for Oklahoma City Thunder).
+Operations: 
+-	Fetches game logs for the specified team across three seasons. 
+-	Merges these logs with plus-minus data to form a training dataset. 
+-	Trains a decision tree regressor to predict game outcomes based on the stats. 
+-	Saves the trained model and plots its tree structure.
+
+build_opponent_focused_tree(opponent_abbreviation)
+Purpose: Constructs a decision tree model to identify successful game strategies against a specified opponent over multiple seasons. 
+This model focuses on what statistically leads to a positive plus-minus when playing against the specified team.
+Inputs:
+opponent_abbreviation: The abbreviation of the opponent team (e.g., 'OKC').
+Operations: 
+-	Collects game statistics from matches where other teams played against the specified opponent. 
+-	Similar to the team-specific function, it trains a decision tree to predict effective strategies and outcomes based on game stats against this opponent. 
+-	Outputs the model's effectiveness and saves it for future use.
+
+Usage:
+-	Set Up: Ensure that the NBA API access is configured and that all necessary Python packages are installed. 
+-	Execution: Run the script directly in an environment where Python 3 is installed along with the necessary libraries. 
+-	Call build_decision_tree_for_team with a specific team abbreviation to build a model for that team. 
+-	Call build_opponent_focused_tree with an opponent team abbreviation to understand effective strategies against them. 
+-	Output: Models are saved in the specified directory with a naming convention reflecting the team and the seasons covered. Visual representations 
+  of the decision trees are saved as PNG files, illustrating how different features affect the plus-minus score.
