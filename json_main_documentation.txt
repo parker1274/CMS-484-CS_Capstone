@@ -1,0 +1,69 @@
+Documentation for json_main.py:
+
+Overview: The json_main.py script is designed to analyze basketball game statistics and extract optimal game strategies using decision trees 
+only based on the features that coaching staffs can directly control. It predicts the most effective strategies for a basketball team and 
+its opponent based on recent game statistics. The script interacts with NBA API to fetch data, processes it to generate predictions, and 
+outputs optimal game strategies in JSON format.
+
+Functions: 
+get_recent_games_stats
+Purpose: Fetches recent game statistics for a specified team and season. 
+Inputs: team_abbreviation: Abbreviation of the team (e.g., 'LAL' for Los Angeles Lakers). number_past_games: Number of recent games to consider for statistics. 
+season: Target season (e.g., '2023-24'). 
+Outputs: A DataFrame of averaged statistics like Field Goal Attempts (FGA), 3-point Field Goal Attempts (FG3A), Free Throw Attempts (FTA), and Personal Fouls (PF).
+
+extract_best_decision_rules 
+Purpose: Extracts the best decision rules from a trained decision tree model based on the input features. 
+Inputs: 
+tree: A trained DecisionTreeRegressor object.
+feature_names: List of feature names used in the model. 
+Outputs: A list of the most significant rules influencing the outcomes, represented as conditions on features.
+
+get_optimal_strategies 
+Purpose: Converts the rules extracted from the decision tree into a user-friendly format. 
+Inputs: rules: A list of decision rules. 
+Outputs: A list of dictionaries, each representing a strategy with details about the feature, operation, and threshold.
+
+make_prediction 
+Purpose: Generates predictions and optimal strategies using a specified model and average statistics. 
+Inputs: 
+model_path: Path to the saved model file. 
+avg_stats: A DataFrame containing average statistics for a team. 
+Outputs: Optimal game strategies based on the model's predictions.
+
+main 
+Purpose: Main execution function that orchestrates the fetching of data, prediction, and printing of results. 
+Operations: 
+-	Reads JSON input for configuration. 
+-	Fetches models and recent game statistics. 
+-	Computes and prints optimal strategies in JSON format.
+
+Usage:
+1)	Prepare Input Data: Ensure that input.json is formatted correctly and includes keys for team_abbreviation, opponent_abbreviation, and season. 
+2)	Model Paths: Verify that the model paths in the script (model_path_team and model_path_opponent) point to the correct location where the decision tree models are stored. 
+3)	Run the Script: Execute the script using Python. The output will be a JSON object printed to the standard output containing the strategies for both the team and its opponent.
+
+Example Input: (input.json)
+{ 
+"team_abbreviation": "LAL", 
+"opponent_abbreviation": "ORL", 
+"season": "2023-24" 
+}
+
+Expected Output:
+{
+  "team_strategies": {
+    "team": "LAL",
+    "strategies": [
+      {"feature": "FGA", "operator": ">", "threshold": 85.5},
+      ...
+    ]
+  },
+  "opponent_strategies": {
+    "team": "ORL",
+    "strategies": [
+      {"feature": "FTA", "operator": "<=", "threshold": 25.5},
+      ...
+    ]
+  }
+}
