@@ -7,39 +7,36 @@
     </head>
 <body>
     <h1>Prediction Request</h1>
+
+    <form id="predictionTypeForm">
+        <p>Prediction type:</p>
+        <div class="radio-group">
+            <input type="radio" id="gamePrediction" name="predictionType" value="gamePrediction">
+            <label for="gamePrediction">Game Prediction</label>
+
+            <input type="radio" id="statsPrediction" name="predictionType" value="statsPrediction">
+            <label for="statsPrediction">Stats Prediction</label>
+
+            <input type="radio" id="controllablesPrediction" name="predictionType" value="controllablesPrediction">
+            <label for="controllablesPrediction">Controllables Prediction</label>
+        </div>
+    </form>
+
+    <form id="teamSelectForm">
+        <div class="select-group">
+            <label for="teamSelect1">Select team for the matchup:</label>
+            <select id="teamSelect1"></select>
+        </div>
+
+        <div class="select-group">
+            <label for="teamSelect2">Select team for the matchup:</label>
+            <select id="teamSelect2"></select>
+        </div>
+    </form>
+
     <form id="predictionForm">
-        <label for="params">Enter Parameters (JSON format):</label>
-        <input type="text" id="params" name="params" value='["classifier", "BOS", "NYK", "2023-24", "3", "15"]'>
         <button type="submit">Get Prediction</button>
     </form>
-
-    <form>
-        <p>Prediction type:</p>
-        <div>
-            <input type="radio" id="gamePrediction" name="predictionType" value="Game Prediction">
-            <label for="gamePrediction">Game Prediction</label>
-        </div>
-        <div>
-            <input type="radio" id="statsPrediction" name="predictionType" value="Stat Prediction">
-            <label for="statsPrediction">Stat Prediction</label>
-        </div>
-        <div>
-            <input type="radio" id="controllablesPrediction" name="predictionType" value="Controllable Prediction">
-            <label for="controllablesPrediction">Controllable Prediction</label>
-        </div>
-    </form>
-
-    <form>
-        <label for="teamSelect1">Select team for the matchup:</label>
-        <select id="teamSelect1"></select>
-    </form>
-
-    <form>
-        <label for="teamSelect2">Select team for the matchup:</label>
-        <select id="teamSelect2"></select>
-    </form>
-
-      
 
 
     <div id="predictionResult"></div>

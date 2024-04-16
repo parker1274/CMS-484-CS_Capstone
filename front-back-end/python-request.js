@@ -6,6 +6,7 @@ const path = require('path');
 function predictionRequest(params) {
     return new Promise((resolve, reject) => {
 
+        // Script path for the run_models file in python-code
         const pythonScriptPath = '/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/run_models.py';
 
         // const pythonProcess = spawn('python3', ['./python-files/main.py', ...params]);

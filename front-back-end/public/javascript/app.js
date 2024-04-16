@@ -33,18 +33,4 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedTeam2 = getSelectedTeam(this);
         console.log('Form 2 selected team:', selectedTeam2);
     });
-
-    // Create a JSON object
-    const data = {
-        predictionType: predictionType,
-        teams: [team1, team2]
-    };
-
-    console.log(data);  // You can view the combined data in the console
-    
-
-
-
-
-
 });

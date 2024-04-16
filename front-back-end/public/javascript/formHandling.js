@@ -2,17 +2,22 @@ export function initFormHandling() {
     const form = document.getElementById('predictionForm');
     const resultDiv = document.getElementById('predictionResult');
 
+    let teamSelect1 = '';
+    let team1 = '';
+    let teamSelect2 = '';
+    let team2 = '';
+
     form.addEventListener('submit', function(event) {
         event.preventDefault();
 
         // Getting the selected prediction type
-        const predictionType = document.querySelector('input[name="predictionType"]:checked').id;
+        const predictionType = document.querySelector('input[name="predictionType"]:checked').value;
 
         // Get the selected teams
-        const teamSelect1 = document.getElementById('teamSelect1');
-        const team1 = teamSelect1.options[teamSelect1.selectedIndex].value;
-        const teamSelect2 = document.getElementById('teamSelect2');
-        const team2 = teamSelect2.options[teamSelect2.selectedIndex].value;
+        teamSelect1 = document.getElementById('teamSelect1');
+        team1 = teamSelect1.options[teamSelect1.selectedIndex].value;
+        teamSelect2 = document.getElementById('teamSelect2');
+        team2 = teamSelect2.options[teamSelect2.selectedIndex].value;
 
         // Hard coded for all inputs
         const season = '2023-24'
@@ -45,12 +50,36 @@ export function initFormHandling() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                const content = `
-                    <p>Prediction Outcome: ${data.prediction.prediction_outcome}</p>
-                    <p>Probability: ${data.prediction.prediction_probability}</p>
-                    <p>Win Probability: ${data.prediction.probabilities.win_probability}</p>
-                    <p>Loss Probability: ${data.prediction.probabilities.loss_probability}</p>
-                `;
+                let content = '';
+
+                switch (data.prediction.prediction_type) {
+                    case 'gamePrediction':
+                        content = `
+                            <p>Prediction Outcome: ${data.prediction.prediction_outcome}</p>
+                            <p>Probability: ${data.prediction.prediction_probability}</p>
+                            <p>Win Probability: ${data.prediction.probabilities.win_probability}</p>
+                            <p>Loss Probability: ${data.prediction.probabilities.loss_probability}</p>
+                        `;
+                        break;
+                        
+                    case 'statsPrediction':
+                        content = `
+                            <p>${team1} Predicted Stats:
+                            <p>Points: ${data.prediction.estimated_stats.teamA.points}</p>
+                            <p>Assists: ${data.prediction.estimated_stats.teamA.assists}</p>
+                            <p>Rebounds: ${data.prediction.estimated_stats.teamA.rebounds}</p>
+
+                            <p>${team2} Predicted Stats:
+                            <p>Points: ${data.prediction.estimated_stats.teamB.points}</p>
+                            <p>Assists: ${data.prediction.estimated_stats.teamB.assists}</p>
+                            <p>Rebounds: ${data.prediction.estimated_stats.teamB.rebounds}</p>
+                        `;
+                        break;
+    
+                    default:
+                        content += `<p>Unknown prediction type.</p>`;
+                }
+
                 resultDiv.innerHTML = content;
             })
             .catch(error => {

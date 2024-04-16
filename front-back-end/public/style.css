@@ -55,11 +55,31 @@ button {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    margin-top: 20px;
 }
 
 button:hover {
     background-color: #27a18d;
     color: #ffffff;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px; /* Space between radio buttons */
+}
+
+.radio-group label {
+    margin-right: 10px; /* Space after each label */
+}
+
+.select-group {
+    margin-bottom: 10px; /* Space between select boxes */
+}
+
+select {
+    width: 100%; /* Full width of the container */
+    padding: 8px;
+    margin-top: 5px;
 }
 
 /* Utility Classes */

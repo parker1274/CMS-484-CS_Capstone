@@ -64,12 +64,12 @@ def all_game_stats_export(team_abbreviation, season):
     all_game_stats = pd.concat(all_game_stats_list, ignore_index=True)
 
 
-    pprint(all_game_stats)
+    # pprint(all_game_stats)
 
     # Record end time
     end_time = time.time()
 
-    print(f"Data collection Time: {end_time - start_time} seconds\n")
+    # print(f"Data collection Time: {end_time - start_time} seconds\n")
 
     return all_game_stats
 

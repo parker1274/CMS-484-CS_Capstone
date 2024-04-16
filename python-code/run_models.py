@@ -45,8 +45,10 @@ def run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number
 
         process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
     
-    elif (model_type == "regressor"):
+    elif (model_type == "statsPrediction"):
         # print(f"Running a regressor model for {TeamA_abbreviation}")
+
+        model_type = "regressor"
         process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
 
     # else:
@@ -88,64 +90,7 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
 
     # If I adjust the model to include the stats of the opponent that they are playing in the game we want to predict, perhaps implememnt the same stat input process
 
-    game_statistics = {
-        'assists': 25,
-        'assistsTurnoverRatio': 1.8,
-        'benchPoints': 35,
-        'biggestLead': 15,
-        'biggestScoringRun': 12,
-        'blocks': 8,
-        'blocksReceived': 4,
-        'fastBreakPointsAttempted': 10,
-        'fastBreakPointsMade': 7,
-        'fastBreakPointsPercentage': 0.7,
-        'fieldGoalsAttempted': 85,
-        'fieldGoalsEffectiveAdjusted': 0.55,
-        'fieldGoalsMade': 45,
-        'fieldGoalsPercentage': 0.529,
-        'foulsOffensive': 10,
-        'foulsDrawn': 20,
-        'foulsPersonal': 18,
-        'foulsTeam': 22,
-        'foulsTechnical': 2,
-        'foulsTeamTechnical': 1,
-        'freeThrowsAttempted': 25,
-        'freeThrowsMade': 20,
-        'freeThrowsPercentage': 0.8,
-        'leadChanges': 5,
-        'points': 110,
-        'pointsAgainst': 105,
-        'pointsFastBreak': 14,
-        'pointsFromTurnovers': 16,
-        'pointsInThePaint': 40,
-        'pointsInThePaintAttempted': 50,
-        'pointsInThePaintMade': 30,
-        'pointsInThePaintPercentage': 0.6,
-        'pointsSecondChance': 12,
-        'reboundsDefensive': 30,
-        'reboundsOffensive': 15,
-        'reboundsPersonal': 45,
-        'reboundsTeam': 5,
-        'reboundsTeamDefensive': 0,
-        'reboundsTeamOffensive': 5,
-        'reboundsTotal': 50,
-        'secondChancePointsAttempted': 10,
-        'secondChancePointsMade': 5,
-        'secondChancePointsPercentage': 0.5,
-        'steals': 9,
-        'threePointersAttempted': 25,
-        'threePointersMade': 10,
-        'threePointersPercentage': 0.4,
-        'timesTied': 4,
-        'trueShootingAttempts': 95.5,
-        'trueShootingPercentage': 0.58,
-        'turnovers': 12,
-        'turnoversTeam': 2,
-        'turnoversTotal': 14,
-        'twoPointersAttempted': 60,
-        'twoPointersMade': 35,
-        'twoPointersPercentage': 0.583
-    }
+
 
     # input_data = pd.DataFrame([game_statistics])
 
@@ -184,6 +129,7 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
 
     # Construct the dictionary with the relevant information
     result_data = {
+        "prediction_type": "gamePrediction",
         "prediction_outcome": "Win" if prediction[0] == 1 else "Loss",
         "prediction_probability": f"{probabilities[0][1]:.2%}" if prediction[0] == 1 else f"{probabilities[0][0]:.2%}",
         "probabilities": {
@@ -191,13 +137,6 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
             "loss_probability": f"{probabilities[0][0]:.8%}"
         }
     }
-
-
-
-
-
-
-
 
     # Use json.dumps() to convert the dictionary to a JSON string
     # and print it so that Node.js can capture the output
@@ -237,8 +176,8 @@ def process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbrevia
 
 
 
-    print("Input avgs:")
-    print(input_df)
+    # print("Input avgs:")
+    # print(input_df)
 
 
     season_avgs(all_game_stats_export(TeamA_abbreviation, season))
@@ -282,22 +221,36 @@ def process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbrevia
     estimated_teamA_rebounds = (teamA_season_stats['reboundsTotal'] + teamB_season_stats['reboundsTotal']) / 2 + predicted_rebounds_diff / 2
     estimated_teamB_rebounds = (teamA_season_stats['reboundsTotal'] + teamB_season_stats['reboundsTotal']) / 2 - predicted_rebounds_diff / 2
 
-    print(teamA_season_stats['reboundsTotal'])
-    print(teamB_season_stats['reboundsTotal'])
+    # print(teamA_season_stats['reboundsTotal'])
+    # print(teamB_season_stats['reboundsTotal'])
 
-    # Print the scalar output for the estimated game statistics
-    print(f"Game Estimated Stats:")
-    print(f"Team A - Points: {estimated_teamA_points}, Assists: {estimated_teamA_assists}, Rebounds: {estimated_teamA_rebounds}")
-    print(f"Team B - Points: {estimated_teamB_points}, Assists: {estimated_teamB_assists}, Rebounds: {estimated_teamB_rebounds}\n")
+    # # Print the scalar output for the estimated game statistics
+    # print(f"Game Estimated Stats:")
+    # print(f"Team A - Points: {estimated_teamA_points}, Assists: {estimated_teamA_assists}, Rebounds: {estimated_teamA_rebounds}")
+    # print(f"Team B - Points: {estimated_teamB_points}, Assists: {estimated_teamB_assists}, Rebounds: {estimated_teamB_rebounds}\n")
+
+
+    # Construct the dictionary with the relevant information
+    result_data = {
+        "prediction_type": "statsPrediction",
+        "estimated_stats": {
+            "teamA": {
+                "points": estimated_teamA_points,
+                "assists": estimated_teamA_assists,
+                "rebounds": estimated_teamA_rebounds
+            },
+            "teamB": {
+                "points": estimated_teamB_points,
+                "assists": estimated_teamB_assists,
+                "rebounds": estimated_teamB_rebounds
+            }
+        }
+    }
+
+    # Use json.dumps() to convert the dictionary to a JSON string
+    # and print it so that Node.js can capture the output
+    print(json.dumps(result_data))
 
 
 
 run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
-
-
-# print("Classifier Model:")
-# process_user_prediction_request("classifier", "BOS", "NYK", "2023-24", 3, 15)
-
-# print("Regressor Model:")
-# process_predicted_stats_model("regressor", "BOS", "NYK", "2023-24", 3, 15)
-
