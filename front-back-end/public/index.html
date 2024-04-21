@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Prediction App</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+    <h1>Prediction Request</h1>
+
+    <form id="predictionTypeForm">
+        <p>Prediction type:</p>
+        <div class="radio-group">
+            <input type="radio" id="gamePrediction" name="predictionType" value="gamePrediction">
+            <label for="gamePrediction">Game Prediction</label>
+
+            <input type="radio" id="statsPrediction" name="predictionType" value="statsPrediction">
+            <label for="statsPrediction">Stats Prediction</label>
+
+            <input type="radio" id="controllablesPrediction" name="predictionType" value="controllablesPrediction">
+            <label for="controllablesPrediction">Controllables Prediction</label>
+        </div>
+    </form>
+
+    <form id="teamSelectForm">
+        <div class="select-group">
+            <label for="teamSelect1">Select team for the matchup:</label>
+            <select id="teamSelect1"></select>
+        </div>
+
+        <div class="select-group">
+            <label for="teamSelect2">Select team for the matchup:</label>
+            <select id="teamSelect2"></select>
+        </div>
+    </form>
+
+    <button class="md-button">Click Me!</button>
+
+    <form id="predictionForm">
+        <button type="submit">Get Prediction</button>
+    </form>
+
+
+    <div id="predictionResult"></div>
+
+    <script type="module" src="javascript/app.js"></script>
+</body>
+</html>

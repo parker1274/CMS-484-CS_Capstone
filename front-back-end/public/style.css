@@ -1,0 +1,121 @@
+/* General Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #243b55;
+    color: #fafafa;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* Header Styles */
+h1 {
+    color: #32a89d;
+    text-align: center;
+}
+
+/* Form Styling */
+form {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #2d4059;
+    border-radius: 8px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #32a89d;
+}
+
+input[type="text"], select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    border: 2px solid #32a89d;
+    border-radius: 4px;
+    background-color: #e5e5e5;
+    color: #243b55;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+}
+
+button {
+    background-color: #32a89d;
+    color: #fafafa;
+    border: none;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #27a18d;
+    color: #ffffff;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px; /* Space between radio buttons */
+}
+
+.radio-group label {
+    margin-right: 10px; /* Space after each label */
+}
+
+.select-group {
+    margin-bottom: 10px; /* Space between select boxes */
+}
+
+select {
+    width: 100%; /* Full width of the container */
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.md-button {
+    background-color: #6200EA; /* Material Design Purple 500 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.md-button:hover {
+    background-color: #3700B3; /* Material Design Purple 700 */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.md-button:focus {
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #6200EA;
+}
+
+
+/* Utility Classes */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    input[type="text"], select, button {
+        width: 100%;
+    }
+}
