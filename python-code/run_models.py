@@ -19,6 +19,7 @@ import sys
 from aws_lambda_powertools import Logger
 from data_collection.feature_avgs import feature_avgs, season_avgs
 from data_collection.season_stats import all_game_stats_export
+from json_main import get_recent_games_stats, make_prediction
 
 LOGGER = Logger(level="DEBUG")
 PARENT_PATH = pathlib.Path(__file__).parent.absolute()
@@ -155,3 +156,65 @@ def process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbrevia
     LOGGER.debug(f"Game Estimated Stats:")
     LOGGER.debug(f"Team A - Points: {estimated_teamA_points}, Assists: {estimated_teamA_assists}, Rebounds: {estimated_teamA_rebounds}")
     LOGGER.debug(f"Team B - Points: {estimated_teamB_points}, Assists: {estimated_teamB_assists}, Rebounds: {estimated_teamB_rebounds}\n")
+
+    # Construct the dictionary with the relevant information
+    result_data = {
+        "prediction_type": "statsPrediction",
+        "estimated_stats": {
+            "teamA": {
+                "points": estimated_teamA_points,
+                "assists": estimated_teamA_assists,
+                "rebounds": estimated_teamA_rebounds
+            },
+            "teamB": {
+                "points": estimated_teamB_points,
+                "assists": estimated_teamB_assists,
+                "rebounds": estimated_teamB_rebounds
+            }
+        }
+    }
+
+    # Use json.dumps() to convert the dictionary to a JSON string
+    # and print it so that Node.js can capture the output
+    return result_data
+
+
+
+def process_controllable_model_request(TeamA_abbreviation, TeamB_abbreviation, season):
+    
+    # with open('./efe_code/input.json', 'r') as file:
+    #     data = json.load(file)
+    # team_abbreviation = data['team_abbreviation']
+    # opponent_abbreviation = data['opponent_abbreviation']
+    # season = data['season']
+
+    team_abbreviation = TeamA_abbreviation
+    opponent_abbreviation = TeamB_abbreviation
+    season = season
+
+
+
+    model_path_team = f"{PARENT_PATH}/model_creation/controllable_models/{team_abbreviation}_['2021-22', '2022-23', '2023-24']_DT_model.joblib"
+    model_path_opponent = f"{PARENT_PATH}/model_creation/controllable_models/Against_{opponent_abbreviation}_['2021-22', '2022-23', '2023-24']_DT_model.joblib"
+
+    avg_stats_team = get_recent_games_stats(team_abbreviation, season=season)
+    avg_stats_opponent = get_recent_games_stats(opponent_abbreviation,
+                                                season=season)
+
+    strategies_team = make_prediction(model_path_team, avg_stats_team)
+    strategies_opponent = make_prediction(model_path_opponent,
+                                          avg_stats_opponent)
+
+    result_data = {
+        "prediction_type": "controllablesPrediction",
+        "team_strategies": {
+            "team": team_abbreviation,
+            "strategies": strategies_team
+        },
+        "opponent_strategies": {
+            "team": opponent_abbreviation,
+            "strategies": strategies_opponent
+        }
+    }
+
+    return result_data
