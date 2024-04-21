@@ -111,8 +111,8 @@ def make_prediction(model_path, avg_stats, team_abbreviation, context="for"):
 team_abbreviation = 'LAL'
 opponent_abbreviation = 'ORL'
 season = '2023-24'
-model_path_team = f"./efe_code/models/{team_abbreviation}__['2021-22', '2022-23', '2023-24']__DT_model.joblib"
-model_path_opponent = f"./efe_code/models/Against_{opponent_abbreviation}__['2021-22', '2022-23', '2023-24']__DT_model.joblib"
+model_path_team = f"./controllable_models/{team_abbreviation}_['2021-22', '2022-23', '2023-24']_DT_model.joblib"
+model_path_opponent = f"./controllable_models/Against_{opponent_abbreviation}_['2021-22', '2022-23', '2023-24']_DT_model.joblib"
 
 avg_stats_team = get_recent_games_stats(team_abbreviation, season=season)
 avg_stats_opponent = get_recent_games_stats(opponent_abbreviation,

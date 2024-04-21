@@ -17,6 +17,7 @@ from joblib import dump, load
 
 from data_collection.feature_avgs import feature_avgs, season_avgs
 from data_collection.season_stats import all_game_stats_export
+from json_main import get_recent_games_stats, make_prediction
 
 model_type = sys.argv[1]
 TeamA_abbreviation = sys.argv[2]
@@ -50,6 +51,12 @@ def run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number
 
         model_type = "regressor"
         process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
+
+    elif (model_type == "controllablesPrediction"):
+        # print(f"Running a regressor model for {TeamA_abbreviation}")
+
+        model_type = "controllables"
+        process_controllable_model_request(TeamA_abbreviation, TeamB_abbreviation, season)
 
     # else:
         # print("The model type entered was not found.")
@@ -143,8 +150,6 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
     print(json.dumps(result_data))
 
 
-
-
 def process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games):
 
     model_path = f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/model_creation/{model_type}_models/{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DT_model.joblib"
@@ -179,6 +184,8 @@ def process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbrevia
     # print("Input avgs:")
     # print(input_df)
 
+
+    # UTILIZE AUGUST'S PICKLE SET FOR THE SEASON AVERAGES INSTEAD OF THE CODE BELOW
 
     season_avgs(all_game_stats_export(TeamA_abbreviation, season))
 
@@ -250,6 +257,47 @@ def process_predicted_stats_model(model_type, TeamA_abbreviation, TeamB_abbrevia
     # Use json.dumps() to convert the dictionary to a JSON string
     # and print it so that Node.js can capture the output
     print(json.dumps(result_data))
+
+
+def process_controllable_model_request(TeamA_abbreviation, TeamB_abbreviation, season):
+    
+    # with open('./efe_code/input.json', 'r') as file:
+    #     data = json.load(file)
+    # team_abbreviation = data['team_abbreviation']
+    # opponent_abbreviation = data['opponent_abbreviation']
+    # season = data['season']
+
+    team_abbreviation = TeamA_abbreviation
+    opponent_abbreviation = TeamB_abbreviation
+    season = season
+
+
+
+    model_path_team = f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/model_creation/controllable_models/{team_abbreviation}_['2021-22', '2022-23', '2023-24']_DT_model.joblib"
+    model_path_opponent = f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/model_creation/controllable_models/Against_{opponent_abbreviation}_['2021-22', '2022-23', '2023-24']_DT_model.joblib"
+
+    avg_stats_team = get_recent_games_stats(team_abbreviation, season=season)
+    avg_stats_opponent = get_recent_games_stats(opponent_abbreviation,
+                                                season=season)
+
+    strategies_team = make_prediction(model_path_team, avg_stats_team)
+    strategies_opponent = make_prediction(model_path_opponent,
+                                          avg_stats_opponent)
+
+    result_data = {
+        "prediction_type": "controllablesPrediction",
+        "team_strategies": {
+            "team": team_abbreviation,
+            "strategies": strategies_team
+        },
+        "opponent_strategies": {
+            "team": opponent_abbreviation,
+            "strategies": strategies_opponent
+        }
+    }
+
+    print(json.dumps(result_data))
+
 
 
 

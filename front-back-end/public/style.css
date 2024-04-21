@@ -82,6 +82,30 @@ select {
     margin-top: 5px;
 }
 
+.md-button {
+    background-color: #6200EA; /* Material Design Purple 500 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.md-button:hover {
+    background-color: #3700B3; /* Material Design Purple 700 */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.md-button:focus {
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #6200EA;
+}
+
+
 /* Utility Classes */
 .clearfix::after {
     content: "";

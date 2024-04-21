@@ -52,6 +52,8 @@ export function initFormHandling() {
             .then(data => {
                 let content = '';
 
+                console.log(data.prediction)
+
                 switch (data.prediction.prediction_type) {
                     case 'gamePrediction':
                         content = `
@@ -64,7 +66,7 @@ export function initFormHandling() {
                         
                     case 'statsPrediction':
                         content = `
-                            <p>${team1} Predicted Stats:
+                            <p>${team1} Predicted Stats:</p>
                             <p>Points: ${data.prediction.estimated_stats.teamA.points}</p>
                             <p>Assists: ${data.prediction.estimated_stats.teamA.assists}</p>
                             <p>Rebounds: ${data.prediction.estimated_stats.teamA.rebounds}</p>
@@ -75,6 +77,38 @@ export function initFormHandling() {
                             <p>Rebounds: ${data.prediction.estimated_stats.teamB.rebounds}</p>
                         `;
                         break;
+
+                        case 'controllablesPrediction':
+
+                            let team_strategies = data.prediction.team_strategies.strategies;
+                            let opponent_strategies = data.prediction.opponent_strategies.strategies;
+
+                            content += `<p>${team1} Predicted Strategies:`
+
+                            team_strategies.forEach(strategy => {
+                                content += `<p>${strategy.feature} ${strategy.operator} ${strategy.threshold}</p>`;
+                            });
+
+                            content += `<p>${team2} Predicted Strategies:`
+
+                            opponent_strategies.forEach(strategy => {
+                                content += `<p>${strategy.feature} ${strategy.operator} ${strategy.threshold}</p>`;
+                            });
+
+                            // content = `
+                            //     <p>${team1} Predicted Strategies:</p>
+                            //     <p>${data.prediction.team_strategies.strategies[0].strategy.feature}</p>
+                            //     <p>${data.prediction.team_strategies.strategies[1]}</p>
+                            //     <p>${data.prediction.team_strategies.strategies[2]}</p>
+                            //     <p>${data.prediction.team_strategies.strategies[3]}</p>
+    
+                            //     <p>${team2} Predicted Strategies:
+                            //     <p>${data.prediction.opponent_strategies.strategies[0]}</p>
+                            //     <p>${data.prediction.opponent_strategies.strategies[1]}</p>
+                            //     <p>${data.prediction.opponent_strategies.strategies[2]}</p>
+                            //     <p>${data.prediction.opponent_strategies.strategies[3]}</p>
+                            // `;
+                            break;
     
                     default:
                         content += `<p>Unknown prediction type.</p>`;

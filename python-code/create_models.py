@@ -12,6 +12,7 @@ Will take the following inputs:
 
 from model_creation.decision_tree_model import game_outcome_model
 from model_creation.multi_stat_model import predicted_stats_model
+from model_creation.efe_realtime_model import create_controllable_both_teams
 
 
 
@@ -32,7 +33,11 @@ def create_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, num
         print(f"Creating a regressor model for {TeamA_abbreviation}")
         predicted_stats_model(TeamA_abbreviation, TeamB_abbreviation, season, number_seasons)
 
+    elif (model_type == "controllable"):
+        print(f"Creating a controllable models for {TeamA_abbreviation} & {TeamB_abbreviation}")
+        create_controllable_both_teams(TeamA_abbreviation, TeamB_abbreviation)
+
     else:
         print("The model type entered was not found.")
 
-# create_model("regressor", "BOS", "NYK", "2023-24", 3)
+create_model("controllable", "BOS", "NYK", "2023-24", 3)
