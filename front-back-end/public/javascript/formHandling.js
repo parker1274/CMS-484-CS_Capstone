@@ -24,7 +24,6 @@ export function initFormHandling() {
         const num_seasons = '3'
         const num_past_games = '15'
         
-
         // Create a JSON object for paramsInput
         const paramsInput = {
             predictionType: predictionType,
@@ -42,7 +41,6 @@ export function initFormHandling() {
         fetchPrediction(paramsInputString);
     });
 
-
     function fetchPrediction(paramsInput) {
         const url = new URL('http://localhost:3000/prediction');
         url.search = new URLSearchParams({params: paramsInput});
@@ -50,70 +48,57 @@ export function initFormHandling() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                let content = '';
-
+                let content = '<div class="prediction-results">';
                 console.log(data.prediction)
 
                 switch (data.prediction.prediction_type) {
                     case 'gamePrediction':
-                        content = `
-                            <p>Prediction Outcome: ${data.prediction.prediction_outcome}</p>
-                            <p>Probability: ${data.prediction.prediction_probability}</p>
-                            <p>Win Probability: ${data.prediction.probabilities.win_probability}</p>
-                            <p>Loss Probability: ${data.prediction.probabilities.loss_probability}</p>
+                        content += `
+                            <h2>Game Prediction</h2>
+                            <p><strong>Prediction Outcome:</strong> ${data.prediction.prediction_outcome}</p>
+                            <p><strong>Probability:</strong> ${data.prediction.prediction_probability}</p>
+                            <p><strong>Win Probability:</strong> ${data.prediction.probabilities.win_probability}</p>
+                            <p><strong>Loss Probability:</strong> ${data.prediction.probabilities.loss_probability}</p>
                         `;
                         break;
                         
                     case 'statsPrediction':
-                        content = `
-                            <p>${team1} Predicted Stats:</p>
-                            <p>Points: ${data.prediction.estimated_stats.teamA.points}</p>
-                            <p>Assists: ${data.prediction.estimated_stats.teamA.assists}</p>
-                            <p>Rebounds: ${data.prediction.estimated_stats.teamA.rebounds}</p>
-
-                            <p>${team2} Predicted Stats:
-                            <p>Points: ${data.prediction.estimated_stats.teamB.points}</p>
-                            <p>Assists: ${data.prediction.estimated_stats.teamB.assists}</p>
-                            <p>Rebounds: ${data.prediction.estimated_stats.teamB.rebounds}</p>
+                        content += `
+                            <h2>Stats Prediction</h2>
+                            <div class="team-stats">
+                                <h3>${team1} Predicted Stats:</h3>
+                                <p>Points: ${data.prediction.estimated_stats.teamA.points}</p>
+                                <p>Assists: ${data.prediction.estimated_stats.teamA.assists}</p>
+                                <p>Rebounds: ${data.prediction.estimated_stats.teamA.rebounds}</p>
+                            </div>
+                            <div class="team-stats">
+                                <h3>${team2} Predicted Stats:</h3>
+                                <p>Points: ${data.prediction.estimated_stats.teamB.points}</p>
+                                <p>Assists: ${data.prediction.estimated_stats.teamB.assists}</p>
+                                <p>Rebounds: ${data.prediction.estimated_stats.teamB.rebounds}</p>
+                            </div>
                         `;
                         break;
 
-                        case 'controllablesPrediction':
+                    case 'controllablesPrediction':
+                        content += `<h2>Controllables Prediction</h2>`;
+                        content += `<div class="team-strategies"><h3>${team1} Strategies:</h3>`;
+                        data.prediction.team_strategies.strategies.forEach(strategy => {
+                            content += `<p>${strategy.feature} ${strategy.operator} ${strategy.threshold}</p>`;
+                        });
+                        content += `</div>`;
+                        content += `<div class="team-strategies"><h3>${team2} Strategies:</h3>`;
+                        data.prediction.opponent_strategies.strategies.forEach(strategy => {
+                            content += `<p>${strategy.feature} ${strategy.operator} ${strategy.threshold}</p>`;
+                        });
+                        content += `</div>`;
+                        break;
 
-                            let team_strategies = data.prediction.team_strategies.strategies;
-                            let opponent_strategies = data.prediction.opponent_strategies.strategies;
-
-                            content += `<p>${team1} Predicted Strategies:`
-
-                            team_strategies.forEach(strategy => {
-                                content += `<p>${strategy.feature} ${strategy.operator} ${strategy.threshold}</p>`;
-                            });
-
-                            content += `<p>${team2} Predicted Strategies:`
-
-                            opponent_strategies.forEach(strategy => {
-                                content += `<p>${strategy.feature} ${strategy.operator} ${strategy.threshold}</p>`;
-                            });
-
-                            // content = `
-                            //     <p>${team1} Predicted Strategies:</p>
-                            //     <p>${data.prediction.team_strategies.strategies[0].strategy.feature}</p>
-                            //     <p>${data.prediction.team_strategies.strategies[1]}</p>
-                            //     <p>${data.prediction.team_strategies.strategies[2]}</p>
-                            //     <p>${data.prediction.team_strategies.strategies[3]}</p>
-    
-                            //     <p>${team2} Predicted Strategies:
-                            //     <p>${data.prediction.opponent_strategies.strategies[0]}</p>
-                            //     <p>${data.prediction.opponent_strategies.strategies[1]}</p>
-                            //     <p>${data.prediction.opponent_strategies.strategies[2]}</p>
-                            //     <p>${data.prediction.opponent_strategies.strategies[3]}</p>
-                            // `;
-                            break;
-    
                     default:
                         content += `<p>Unknown prediction type.</p>`;
                 }
 
+                content += '</div>';
                 resultDiv.innerHTML = content;
             })
             .catch(error => {
@@ -121,9 +106,5 @@ export function initFormHandling() {
                 resultDiv.innerHTML = `<p>Error fetching prediction: ${error}</p>`;
             });
     }
-
-
-
-
-
 }
+

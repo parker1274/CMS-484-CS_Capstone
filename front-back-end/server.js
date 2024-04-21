@@ -9,6 +9,19 @@ app.use(express.json()); // Middleware to parse JSON bodies
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+// Set up routes for each HTML file
+app.get('/predictions', (req, res) => {
+    res.sendFile(__dirname + '/public/predictions.html');
+});
+
+app.get('/stats', (req, res) => {
+    res.sendFile(__dirname + '/public/stats.html');
+});
+
+app.get('/about', (req, res) => {
+    res.sendFile(__dirname + '/public/about.html');
+});
+
 
 
 // JS functions to process the users requests -------------------------

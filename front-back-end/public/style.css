@@ -1,8 +1,8 @@
 /* General Body Styles */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #243b55;
-    color: #fafafa;
+    background-color: #F5F5F5; /* Light grey background */
+    color: #333333; /* Dark grey text */
     margin: 0;
     padding: 20px;
     line-height: 1.6;
@@ -10,7 +10,7 @@ body {
 
 /* Header Styles */
 h1 {
-    color: #32a89d;
+    color: #FF7043; /* Vibrant orange */
     text-align: center;
 }
 
@@ -18,14 +18,15 @@ h1 {
 form {
     margin: 20px 0;
     padding: 20px;
-    background-color: #2d4059;
+    background-color: #FFFFFF; /* White background for forms */
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
 }
 
 label {
     display: block;
     margin-bottom: 10px;
-    color: #32a89d;
+    color: #FF7043; /* Matching the header */
 }
 
 input[type="text"], select {
@@ -34,10 +35,10 @@ input[type="text"], select {
     margin-top: 5px;
     margin-bottom: 16px;
     box-sizing: border-box;
-    border: 2px solid #32a89d;
+    border: 1px solid #BDBDBD; /* Soft grey border */
     border-radius: 4px;
-    background-color: #e5e5e5;
-    color: #243b55;
+    background-color: #FAFAFA; /* Off-white */
+    color: #616161; /* Medium grey for text */
 }
 
 input[type="radio"] {
@@ -45,8 +46,8 @@ input[type="radio"] {
 }
 
 button {
-    background-color: #32a89d;
-    color: #fafafa;
+    background-color: #FF7043; /* Orange background for buttons */
+    color: #FFFFFF; /* White text */
     border: none;
     padding: 10px 20px;
     text-transform: uppercase;
@@ -59,8 +60,8 @@ button {
 }
 
 button:hover {
-    background-color: #27a18d;
-    color: #ffffff;
+    background-color: #E64A19; /* Darker shade of orange */
+    color: #FFFFFF;
 }
 
 .radio-group {
@@ -83,7 +84,7 @@ select {
 }
 
 .md-button {
-    background-color: #6200EA; /* Material Design Purple 500 */
+    background-color: #4CAF50; /* Material Design Green */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -97,14 +98,13 @@ select {
 }
 
 .md-button:hover {
-    background-color: #3700B3; /* Material Design Purple 700 */
+    background-color: #388E3C; /* Darker green */
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
 }
 
 .md-button:focus {
-    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #6200EA;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #4CAF50;
 }
-
 
 /* Utility Classes */
 .clearfix::after {

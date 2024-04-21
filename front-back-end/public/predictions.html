@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>Prediction App</title>
+</head>
+<body>
+    <nav class="container-fluid">
+        <ul>
+            <li><strong>Tech Startup - Prediction App</strong></li>
+        </ul>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/predictions">Predictions</a></li>
+            <li><a href="/stats">Stats</a></li>
+            <li><a href="/about">About Us</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <h1>Prediction Request</h1>
+        <form id="predictionTypeForm">
+            <p>Prediction type:</p>
+            <div class="radio-group">
+                <input type="radio" id="gamePrediction" name="predictionType" value="gamePrediction">
+                <label for="gamePrediction">Game Prediction</label>
+
+                <input type="radio" id="statsPrediction" name="predictionType" value="statsPrediction">
+                <label for="statsPrediction">Stats Prediction</label>
+
+                <input type="radio" id="controllablesPrediction" name="predictionType" value="controllablesPrediction">
+                <label for="controllablesPrediction">Controllables Prediction</label>
+            </div>
+        </form>
+
+        <form id="teamSelectForm">
+            <div class="select-group">
+                <label for="teamSelect1">Select team for the matchup:</label>
+                <select id="teamSelect1"></select>
+            </div>
+
+            <div class="select-group">
+                <label for="teamSelect2">Select team for the matchup:</label>
+                <select id="teamSelect2"></select>
+            </div>
+        </form>
+
+        <button class="md-button">Click Me!</button>
+
+        <form id="predictionForm">
+            <button type="submit">Get Prediction</button>
+        </form>
+
+        <div id="predictionResult"></div>
+    </main>
+    <footer class="container">
+        <small>
+            <a href="#">Privacy Policy</a> • <a href="#">Terms of Service</a>
+        </small>
+    </footer>
+    <script type="module" src="javascript/app.js"></script>
+</body>
+</html>
