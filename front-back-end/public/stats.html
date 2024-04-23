@@ -9,18 +9,45 @@
 <body>
     <nav class="container-fluid">
         <ul>
-            <li><strong>Tech Startup - Statistics</strong></li>
+            <li><strong>NBA Navigator</strong></li>
         </ul>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/predictions">Predictions</a></li>
-            <li><a href="/stats">Stats</a></li>
+            <li><a href="/stats">Statistics</a></li>
             <li><a href="/about">About Us</a></li>
         </ul>
     </nav>
     <main class="container">
         <h1>Site Statistics</h1>
-        <p>This is the statistics page of our site.</p>
+        
+        <form id="teamSelectForm2">
+            <div class="select-group">
+                <label for="teamSelect3">Select team for the matchup:</label>
+                <select id="teamSelect3"></select>
+            </div>
+        </form>
+
+        <label for="seasonSelect">Choose a season:</label>
+        <select id="seasonSelect">
+            <option value="">Select a season</option>
+            <option value="2023">2023-2024</option>
+            <option value="2022">2022-2023</option>
+            <option value="2021">2021-2022</option>
+            <option value="2020">2020-2021</option>
+        </select>
+    
+        <button id="fetchStats">Fetch Stats</button>
+        <div id="result"></div>
+        <button id="loadMore" style="display: none;">Load More</button>
+    
+    
+        <script type="module" src="javascript/app.js"></script>
+
+
+
+
+
     </main>
     <footer class="container">
         <small>

@@ -1,0 +1,95 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif; /* Default Font */
+    background-color: #f4f4f4; /* Light Grey Background */
+    color: #333; /* Dark Grey Text */
+    line-height: 1.6;
+    padding: 20px; /* Padding around the content */
+}
+
+h1 {
+    color: #444; /* Darker Grey for Headings */
+}
+
+/* Container for centered alignment */
+.container {
+    width: 90%;
+    margin: auto;
+    max-width: 1200px;
+}
+
+/* Styling the dropdown and buttons */
+select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd; /* Light grey border */
+}
+
+button {
+    background-color: #5cb85c; /* Green Background */
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: #4cae4c; /* Slightly Darker Green on Hover */
+}
+
+/* Responsive design for small screens */
+@media (max-width: 600px) {
+    .container {
+        width: 100%;
+    }
+}
+/* Styles for the JSON data container */
+.json-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #333;
+}
+
+/* Styles for each section of JSON data */
+.json-section {
+    margin-bottom: 5px;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.json-section:last-child {
+    border-bottom: none;
+}
+
+/* Key styling */
+.json-section > strong {
+    color: #d34;
+    margin-right: 10px;
+    cursor: pointer; /* Indicates the key is clickable for collapsible functionality */
+}
+
+/* Value styling */
+.json-section > span {
+    white-space: pre; /* Maintains whitespace formatting for JSON values */
+    display: none; /* Initially hide the value */
+    max-width: 80%;
+    overflow: auto; /* Enables scrolling for longer text */
+}
+
+.json-section.active > span {
+    display: inline; /* Show on active */
+}
+
+.json-section:hover {
+    background-color: #efefef;
+}

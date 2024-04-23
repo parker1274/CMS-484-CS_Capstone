@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-    <title>Tech Startup</title>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr; /* This ensures that all child elements (sections) stack vertically */
+        }
+    </style>
+    <title>NBA Navigator</title>
 </head>
 <body>
     <nav class="container-fluid">
         <ul>
-            <li><strong>Tech Startup</strong></li>
+            <li><strong>NBA Navigator</strong></li>
         </ul>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/predictions">Predictions</a></li>
-            <li><a href="/stats">Stats</a></li>
+            <li><a href="/stats">Statistics</a></li>
             <li><a href="/about">About Us</a></li>
         </ul>
     </nav>
@@ -22,10 +28,13 @@
         <div class="grid">
             <section id="overview">
                 <hgroup>
-                    <h2>Welcome to Tech Startup</h2>
-                    <h3>Your solution to [industry challenge]</h3>
+                    <h2>Welcome to NBA Navigator</h2>
+                    <h3>Your solution to NBA predictions and statistics</h3>
                 </hgroup>
-                <p>At Tech Startup, we specialize in delivering cutting-edge solutions designed to streamline business processes and boost productivity. Discover how we can help transform your business.</p>
+                <p>
+                    At NBA Navigator, we specialize in delivering data solutions designed to streamline business processes 
+                    and boost productivity. Discover how we can help transform your business.
+                </p>
             </section>
             <section id="features">
                 <hgroup>
@@ -38,17 +47,6 @@
                     <li>Feature 2: Description</li>
                     <li>Feature 3: Description</li>
                 </ul>
-            </section>
-            <section id="contact">
-                <hgroup>
-                    <h2>Contact Us</h2>
-                    <h3>Get in Touch</h3>
-                </hgroup>
-                <form class="grid">
-                    <input type="text" id="firstname" name="firstname" placeholder="Your Name" aria-label="Your Name" required>
-                    <input type="email" id="email" name="email" placeholder="Your Email" aria-label="Your Email" required>
-                    <button type="submit" onclick="event.preventDefault()">Send Message</button>
-                </form>
             </section>
         </div>
     </main>

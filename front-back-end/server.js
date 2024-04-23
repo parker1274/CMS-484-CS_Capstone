@@ -33,7 +33,7 @@ const { predictionRequest } = require('./python-request');
 const { actionableDataRequest } = require('./python-request');
 
 // Import team performance insight (tpi) function
-const { tpiRequest } = require('./python-request');
+const { statsRequest } = require('./python-request');
 
 
 
@@ -60,49 +60,62 @@ app.get('/prediction', async (req, res) => {
     }
 });
 
-// Actionable data function call
-app.get('/actionable-data', async (req, res) => {
-    console.log("Actionable-data endpoint hit", req.query);
+const { exec } = require('child_process');
+ 
+// Handle POST request to fetch data with pagination
+app.post('/fetchData', (req, res) => {
+    
+    const { abbr, seasonYear } = req.body;
+    const start = req.query.start || '0'; // Default to '0' if not provided
+    const limit = req.query.limit || '5'; // Default to '5' if not provided
+    const scriptPath = '/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/team_stats.py'; // Adjust this to your actual Python script path
 
-    try {
-        actionableArgs = JSON.parse(req.query.params);
+    // Command to execute the Python script with parameters
+    const command = `python3 ${scriptPath} ${abbr} ${seasonYear} ${start} ${limit}`;
 
-        console.log()
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`exec error: ${error}`);
+            return res.status(500).send(stderr);
+        }
 
-        const actionableData = await actionableDataRequest(actionableArgs);
-
-        console.log("Actionable data values (server): ")
-        console.log(actionableData);
-
-        res.json({ actionableData });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-        console.log("Error relating to actionable data function call on the server")
-    }
+        formatOutput = JSON.stringify(stdout)
+        // console.log("Server output")
+        // console.log(formatOutput)
+        res.send(formatOutput); // Send back the result of the Python script
+    });
 });
 
-// Team Performance Insight function call
-app.get('/team-performance-insight', async (req, res) => {
-    console.log("TPI endpoint hit", req.query);
+// // Handle POST request to fetch data with pagination
+// app.post('/stats/fetchData', async (req, res) => {
+//     console.log("Stats endpoint hit", req.body);
 
-    try {
-        tpiArgs = JSON.parse(req.query.params);
+//     // console.log(JSON.parse(req.query));
 
-        console.log()
+//     try {
+//         console.log("Working")
 
-        const tpiData = await tpiRequest(actionableArgs);
+//         const statsQuery = JSON.parse(req.query.start);
+//         const statsParams = JSON.parse(req.body)
 
-        console.log("TPI values (server): ")
-        console.log(tpiData);
+//         const statArgs = { ...statsQuery, ...statsParams };
 
-        res.json({ tpiData });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-        console.log("Error relating to TPI function call on the server")
-    }
-});
+//         console.log(statArgs);
 
 
+//         console.log();
+
+//         const stats = await statsRequest(statArgs);
+
+//         console.log("Stat values (server): ")
+//         console.log(stats);
+
+//         res.json({ stats });
+//     } catch (error) {
+//         res.status(500).json({ error: error.message });
+//         console.log("Error relating to stat function call on the server")
+//     }
+// });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
