@@ -64,22 +64,27 @@ export function initStatsScript() {
     
         console.log("THIS ONE")
 
-        newData = JSON.parse(data)
+        let newData = JSON.parse(data)
         console.log(newData)
         console.log(Array.isArray(newData));
 
 
+        // console.log(data)
+        // console.log(Array.isArray(data));
 
-        // // Append data rows
-        // data.forEach(item => {
-        //     const row = document.createElement('tr');
-        //     Object.keys(item).forEach(key => {
-        //         const cell = document.createElement('td');
-        //         cell.textContent = item[key];
-        //         row.appendChild(cell);
-        //     });
-        //     table.appendChild(row);
-        // });
+
+
+
+        // Append data rows
+        newData.forEach(item => {
+            const row = document.createElement('tr');
+            Object.keys(item).forEach(key => {
+                const cell = document.createElement('td');
+                cell.textContent = item[key];
+                row.appendChild(cell);
+            });
+            table.appendChild(row);
+        });
     
         // Append the table to the result container
         resultContainer.appendChild(table);
