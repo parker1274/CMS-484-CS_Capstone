@@ -7,11 +7,11 @@ from sklearn.tree import export_graphviz
 from joblib import dump, load
 import time
 
-# import sys
-# sys.path.append('/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/data_collection')
+import sys
+sys.path.append('/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/data_collection')
 
  
-from model_creation.model_functions import remove_prefix, differential_ratio_features, grid_hyperparameter
+from model_creation.model_functions import remove_prefix, differential_ratio_features, differential_ratio_stats, grid_hyperparameter
 from data_collection.season_stats import multi_season_data_export
 from data_collection.feature_avgs import feature_avgs
 
@@ -23,6 +23,8 @@ def game_outcome_model(TeamA_abbreviation, TeamB_abbreviation, season, number_se
     TeamB_abbreviation = TeamB_abbreviation
     season = season
     number_seasons = number_seasons
+    TeamA_identifier = 0
+    TeamB_identifier = 1
 
 
 
@@ -30,30 +32,42 @@ def game_outcome_model(TeamA_abbreviation, TeamB_abbreviation, season, number_se
     start_time = time.time()
 
     # df = season_stats.all_game_stats_export(team_abbreviation, season)
-    TeamA = multi_season_data_export(TeamA_abbreviation, season, number_seasons, 0)
+    TeamA_df = multi_season_data_export(TeamA_abbreviation, season, number_seasons, TeamA_identifier)
+    print(list(TeamA_df.columns))
 
-    TeamB = multi_season_data_export(TeamB_abbreviation, season, number_seasons, 1)
-
-    # Now you can concatenate them
-    combined_df = pd.concat([TeamA, TeamB], axis=1)
-
-
-    feature_names = remove_prefix(TeamA)
-
-    print("These are the combined_features:")
-    print(combined_df)
-
-    print("These are the feature_names:")
-    print(feature_names)
-
-    print("These are the column names of the combined df:")
-    print(combined_df.columns)
+    TeamB_df = multi_season_data_export(TeamB_abbreviation, season, number_seasons, TeamB_identifier)
+    print(list(TeamB_df.columns))
 
 
+    print("Team A differential df")
+    TeamA_diff_ratio_df = differential_ratio_stats(TeamA_df, TeamA_abbreviation, TeamA_identifier)
+    print(TeamA_diff_ratio_df)
+
+    print("Team B differential df")
+    TeamB_diff_ratio_df = differential_ratio_stats(TeamB_df, TeamB_abbreviation, TeamB_identifier)
+    print(TeamB_diff_ratio_df)
 
 
-    # Convert all the stats to differential and ration features
-    df_diff_ratio = differential_ratio_features(combined_df, feature_names)
+    # # Now you can concatenate them
+    # combined_df = pd.concat([TeamA, TeamB], axis=1)
+
+
+    # feature_names = remove_prefix(TeamA)
+
+    # print("These are the combined_features:")
+    # print(combined_df)
+
+    # print("These are the feature_names:")
+    # print(feature_names)
+
+    # print("These are the column names of the combined df:")
+    # print(combined_df.columns)
+
+
+
+
+    # # Convert all the stats to differential and ration features
+    # df_diff_ratio = differential_ratio_features(combined_df, feature_names, TeamA_abbreviation, TeamB_abbreviation)
 
 
 
@@ -96,15 +110,15 @@ def game_outcome_model(TeamA_abbreviation, TeamB_abbreviation, season, number_se
 
 
 
-    # Visualize the decision tree
-    plt.figure(figsize=(20, 10))
-    plot_tree(tree, filled=True, feature_names=features.columns, class_names=['Loss', 'Win'], rounded=True, fontsize=12)
+    # # Visualize the decision tree
+    # plt.figure(figsize=(20, 10))
+    # plot_tree(tree, filled=True, feature_names=features.columns, class_names=['Loss', 'Win'], rounded=True, fontsize=12)
 
-    # Extract the season from the CSV filename
-    output_filename = f"./model_creation/models_png/{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DTC.png"
+    # # Extract the season from the CSV filename
+    # output_filename = f"./model_creation/models_png/{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DTC.png"
 
-    # Save the figure with the new filename
-    plt.savefig(output_filename)
+    # # Save the figure with the new filename
+    # plt.savefig(output_filename)
 
     grid_hyperparameter(features, X_train, X_test, y_train, y_test)
 
@@ -146,27 +160,27 @@ def game_outcome_model(TeamA_abbreviation, TeamB_abbreviation, season, number_se
     # print(probabilities)
 
 
-    # Retrieve feature importances
-    feature_importances = tree.feature_importances_
+    # # Retrieve feature importances
+    # feature_importances = tree.feature_importances_
 
-    # Match feature names with their importance scores
-    features = X_train.columns
-    importance_dict = dict(zip(features, feature_importances))
+    # # Match feature names with their importance scores
+    # features = X_train.columns
+    # importance_dict = dict(zip(features, feature_importances))
 
-    # Sort features by their importance scores
-    sorted_importance = sorted(importance_dict.items(), key=lambda x: x[1], reverse=True)
+    # # Sort features by their importance scores
+    # sorted_importance = sorted(importance_dict.items(), key=lambda x: x[1], reverse=True)
 
-    # Unpack the feature names and their importance scores for visualization
-    feature_names, importances = zip(*sorted_importance)
+    # # Unpack the feature names and their importance scores for visualization
+    # feature_names, importances = zip(*sorted_importance)
 
-    # Visualize the feature importances
-    plt.figure(figsize=(10, 8))
-    plt.barh(feature_names, importances)
-    plt.xlabel('Feature Importance Score')
-    plt.ylabel('Features')
-    plt.title('Feature Importances')
-    plt.gca().invert_yaxis()  # Invert y-axis to have the most important feature on top
-    plt.show()
+    # # Visualize the feature importances
+    # plt.figure(figsize=(10, 8))
+    # plt.barh(feature_names, importances)
+    # plt.xlabel('Feature Importance Score')
+    # plt.ylabel('Features')
+    # plt.title('Feature Importances')
+    # plt.gca().invert_yaxis()  # Invert y-axis to have the most important feature on top
+    # plt.show()
 
 
     def export_df_diff_ratio(dataframe):

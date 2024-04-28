@@ -19,12 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Populate dropdowns for teams
     populateTeamSelect('teamSelect1');
     populateTeamSelect('teamSelect2');
-    populateTeamSelect('teamSelect3');
 
     // Setup event listeners for team selections
     const teamSelect1 = document.getElementById('teamSelect1');
     const teamSelect2 = document.getElementById('teamSelect2');
-    const teamSelect3 = document.getElementById('teamSelect3');
 
 
     teamSelect1.addEventListener('change', function() {
@@ -36,12 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedTeam2 = getSelectedTeam(this);
         console.log('Form 2 selected team:', selectedTeam2);
     });
-
-    teamSelect3.addEventListener('change', function() {
-        const selectedTeam3 = getSelectedTeam(this);
-        console.log('Form 3 selected team:', selectedTeam3);
-    });
-
 });
 
 document.addEventListener('DOMContentLoaded', function() {

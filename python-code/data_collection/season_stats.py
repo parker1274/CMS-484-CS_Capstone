@@ -1,15 +1,12 @@
 import pandas as pd
-import numpy as np
-import json
-from pprint import pprint
 
 import matplotlib.pyplot as plt
 import time
 from scipy.stats import randint
 import shap
 
-from data_collection.season_gen_data import fetch_game_ids
-from data_collection.game_stats import individual_game_stats
+from season_gen_data import fetch_game_ids
+from game_stats import individual_game_stats
 
 
 
@@ -34,31 +31,47 @@ def all_game_stats_export(team_abbreviation, season):
 
         # Check if the selected team is home or away
         if game_df['homeTeam'].iloc[0]['teamTricode'] == team_abbreviation:
-            new_df = pd.DataFrame([game_df['homeTeam'].iloc[0]['statistics']])
+            selected_team_df = pd.DataFrame([game_df['homeTeam'].iloc[0]['statistics']])
             selected_team = game_df['homeTeam'].iloc[0]['score']
             opp_team = game_df['awayTeam'].iloc[0]['score']
             # opp_abbreviation = game_df['awayTeam'].iloc[0]['teamTricode']
 
+            opponent_team_df = pd.DataFrame([game_df['awayTeam'].iloc[0]['statistics']])
+
+
+
+            selected_team_df = selected_team_df.add_prefix('Selected_')
+            opponent_team_df = opponent_team_df.add_prefix('Opponent_')
+
+
         else:
-            new_df = pd.DataFrame([game_df['awayTeam'].iloc[0]['statistics']])
+            selected_team_df = pd.DataFrame([game_df['awayTeam'].iloc[0]['statistics']])
             opp_team = game_df['homeTeam'].iloc[0]['score']
             selected_team = game_df['awayTeam'].iloc[0]['score']
             # opp_abbreviation = game_df['homeTeam'].iloc[0]['teamTricode']
 
+            opponent_team_df = pd.DataFrame([game_df['homeTeam'].iloc[0]['statistics']])
+
+            selected_team_df = selected_team_df.add_prefix('Selected_')
+            opponent_team_df = opponent_team_df.add_prefix('Opponent_')
+            
+
+        # Concatenate the dataframes horizontally
+        combined_df = pd.concat([selected_team_df, opponent_team_df], axis=1)
 
 
 
-        new_df[f"{team_abbreviation}"] = selected_team
-        new_df['Opponent'] = opp_team
+        combined_df[f"{team_abbreviation}"] = selected_team
+        combined_df['Opponent'] = opp_team
 
         if selected_team > opp_team:
             outcome = 1
         else:
             outcome = 0
 
-        new_df['WL'] = outcome
+        combined_df['WL'] = outcome
 
-        all_game_stats_list.append(new_df)
+        all_game_stats_list.append(combined_df)
 
 
     all_game_stats = pd.concat(all_game_stats_list, ignore_index=True)
@@ -124,14 +137,15 @@ def multi_season_data_export(team_abbreviation, season, num_seasons, team_identi
     return multi_season_DF
 
 
+# test = all_game_stats_export('BOS', '2023-24')
 
+# # Convert the columns object to a list and print it
+# column_names = list(test.columns)
+# print(column_names)
 
+# test = multi_season_data_export('NYK', '2023-24', 3, 1)
 
-# test = multi_season_data_export('BOS', '2023-24', 1, 0)
-
-# names = test.columns
-
-# print(names)
+# print(test)
 
 # # Shape of the DataFrame
 # print("Shape of DataFrame:", test.shape)

@@ -45,7 +45,7 @@ def predicted_stats_model(TeamA_abbreviation, TeamB_abbreviation, season, number
 
 
     # Convert all the stats to differential and ration features
-    df_diff_ratio = differential_ratio_features(combined_df, feature_names)
+    df_diff_ratio = differential_ratio_features(combined_df, feature_names, TeamA_abbreviation, TeamB_abbreviation)
 
 
 
@@ -132,12 +132,12 @@ def predicted_stats_model(TeamA_abbreviation, TeamB_abbreviation, season, number
 
 
 
-    from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+    # from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-    # Evaluate the model's performance using MAE for each target variable
-    for i, col in enumerate(target_columns):
-        mae = mean_absolute_error(y_test_clean[col], predictions[:, i])
-        print(f"MAE for {col}: {mae}")
+    # # Evaluate the model's performance using MAE for each target variable
+    # for i, col in enumerate(target_columns):
+    #     mae = mean_absolute_error(y_test_clean[col], predictions[:, i])
+    #     print(f"MAE for {col}: {mae}")
 
 
     # Record end time
