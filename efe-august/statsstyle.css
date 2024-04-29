@@ -15,6 +15,7 @@ body {
 
 h1 {
     color: #444; /* Darker Grey for Headings */
+    text-align: center; /* Centering the header */
 }
 
 /* Container for centered alignment */
@@ -24,31 +25,84 @@ h1 {
     max-width: 1200px;
 }
 
-/* Styling the dropdown and buttons */
 select, button {
+    display: block; /* Ensures full-width on smaller screens */
     width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd; /* Light grey border */
+    margin-top: 20px;
+    box-sizing: border-box; /* Includes padding and border in the element's width */
 }
 
+.form-group {
+    margin-bottom: 20px; /* Adds space between form groups */
+}
+
+
 button {
-    background-color: #5cb85c; /* Green Background */
+    background-color: #3498db; /* A pleasant blue */
     color: white;
     border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer; /* Indicates interactivity */
 }
 
 button:hover {
-    background-color: #4cae4c; /* Slightly Darker Green on Hover */
+    background-color: #2980b9; /* Slightly Darker Blue on Hover */
 }
 
+#result {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff; /* White background for better contrast with the table */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05); /* Subtle shadows for depth */
+}
+
+.table th, .table td {
+    padding: 15px;
+    border: 1px solid #e7e7e7; /* Lighter borders for a cleaner look */
+    text-align: left;
+}
+
+.table th {
+    background-color: #fafafa; /* Very light background for headers */
+    color: #333;
+    font-weight: 600; /* Bold but not too bold */
+}
+
+/* Zebra striping for better readability */
+.table tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
+
+
+
+
 /* Responsive design for small screens */
-@media (max-width: 600px) {
-    .container {
+@media (max-width: 768px) {
+    .container, .table th, .table td {
         width: 100%;
+        padding: 10px;
+    }
+
+    .table {
+        font-size: 14px; /* Ensures text remains legible */
     }
 }
+
+
 /* Styles for the JSON data container */
 .json-container {
     background-color: #f9f9f9;
@@ -92,4 +146,38 @@ button:hover {
 
 .json-section:hover {
     background-color: #efefef;
+}
+
+#result {
+    width: 100%; /* or set a fixed width as needed */
+    overflow-x: auto; /* Allows horizontal scrolling */
+    overflow-y: hidden; /* Prevents vertical scrolling */
+    border: 1px solid #ccc; /* Adds a border around the scrollable area */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Optional: adds shadow for depth */
+    background: #fff; /* Ensures a white background */
+    padding: 10px; /* Padding inside the container */
+}
+
+@media (max-width: 768px) {
+    .table {
+        font-size: 14px; /* Smaller font size for small devices */
+    }
+
+    .table th, .table td {
+        padding: 8px; /* Less padding to fit smaller screens */
+    }
+}
+
+/* Hover and focus styles for interactive elements */
+select, button, input, textarea {
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+select:hover, button:hover, input:hover, textarea:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+select:focus, input:focus, textarea:focus {
+    border-color: #3498db; /* Matching the button color */
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); /* Subtle focus ring */
 }

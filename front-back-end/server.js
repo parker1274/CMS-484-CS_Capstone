@@ -68,7 +68,7 @@ app.post('/fetchData', (req, res) => {
     const { abbr, seasonYear } = req.body;
     const start = req.query.start || '0'; // Default to '0' if not provided
     const limit = req.query.limit || '5'; // Default to '5' if not provided
-    const scriptPath = '/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/team_stats.py'; // Adjust this to your actual Python script path
+    const scriptPath = '/Users/augustalexander/VsCode/CMS-484-CS_Capstone/python-code/team_stats.py'; // Adjust this to your actual Python script path
 
     // Command to execute the Python script with parameters
     const command = `python3 ${scriptPath} ${abbr} ${seasonYear} ${start} ${limit}`;
