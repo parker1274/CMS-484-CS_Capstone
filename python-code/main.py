@@ -10,7 +10,8 @@ from run_models import run_model
 
 
 # action, model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games
-action = 1 # 0 for create & 1 for run
+action = 0 # 0 for create & 1 for run
+# model_type = "gamePrediction"
 model_type = "classifier"
 TeamA_abbreviation = "BOS"
 TeamB_abbreviation = "NYK"
@@ -34,15 +35,12 @@ number_past_games = 15
 # print(TeamA_abbreviation)
 
 
-
-# print("TEST")
-
 if (action == 0):
     print("Creating model")
     create_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons)
 
 elif (action == 1):
-    # print("Running model")
+    print("Running model")
     run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
 
 else:

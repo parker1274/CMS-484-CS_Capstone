@@ -56,10 +56,10 @@ def grid_hyperparameter(feature_names, X_train, X_test, y_train, y_test):
     plot_tree(best_tree, filled=True, feature_names=feature_names, class_names=['Loss', 'Win'], rounded=True, fontsize=12)
 
     
-    # # Visualize the decision tree
-    # plt.figure(figsize=(20, 10))
-    # plot_tree(best_tree, filled=True, feature_names=feature_names, class_names=['Loss', 'Win'], rounded=True, fontsize=12)
-    # plt.show()
+    # Visualize the decision tree
+    plt.figure(figsize=(20, 10))
+    plot_tree(best_tree, filled=True, feature_names=feature_names, class_names=['Loss', 'Win'], rounded=True, fontsize=12)
+    plt.show()
 
     return best_tree
 
@@ -119,7 +119,7 @@ def differential_ratio_features(combined_df, features_df, TeamA_abbreviation, Te
     return df_diff_ratio
 
 # New Version
-def differential_ratio_stats(team_df, Team_abbreviation, Team_identifier):
+def differential_ratio_stats(team_df, feature_df, Team_abbreviation, Team_identifier):
 
     # print("These are the combined_features:")
     # print(combined_df)
@@ -128,25 +128,30 @@ def differential_ratio_stats(team_df, Team_abbreviation, Team_identifier):
 
     # ADD CODE THAT CHECKS FOR TEAM IDENTIFIER, THEN PERFORMS THE COLUMN DROPS
 
+    # print("Inside the model functions")
+    # print(feature_df)
 
 
     if Team_identifier == 0:
 
         Team_identifier_value = 'TeamA'
         # Drop the columns that can't be used in the model
-        team_df.drop([f'{Team_identifier_value}_{Team_abbreviation}', f'{Team_identifier_value}_Opponent', f'{Team_identifier_value}_WL', 
+        team_df.drop([f'{Team_identifier_value}_{Team_abbreviation}', f'{Team_identifier_value}_Opponent', 
                                 f'{Team_identifier_value}_Selected_biggestLeadScore', f'{Team_identifier_value}_Selected_biggestScoringRunScore', f'{Team_identifier_value}_Selected_minutes', 
                                 f'{Team_identifier_value}_Selected_minutesCalculated', f'{Team_identifier_value}_Selected_timeLeading',
-                                f'{Team_identifier_value}_{Team_abbreviation}', f'{Team_identifier_value}_Opponent', f'{Team_identifier_value}_WL', 
                                 f'{Team_identifier_value}_Opponent_biggestLeadScore', f'{Team_identifier_value}_Opponent_biggestScoringRunScore', f'{Team_identifier_value}_Opponent_minutes', 
                                 f'{Team_identifier_value}_Opponent_minutesCalculated', f'{Team_identifier_value}_Opponent_timeLeading'], 
         axis=1, inplace=True)
+
+        # team_df.drop([f'{Team_abbreviation}','Opponent','WL'])
         
+        num_columns = len(team_df.columns)
+        print("Number of columns:", num_columns)
         
-        # # Drop the same columns from the feature list
-        # features_df.drop([f'Selected_{Team_abbreviation}', 'Selected_WL', 'Selected_Opponent', 'Selected_biggestLeadScore', 'Selected_biggestScoringRunScore', 
-        #                   'Selected_minutes', 'Selected_minutesCalculated', 'Selected_timeLeading'],
-        #                 axis=1, inplace=True)
+        # Drop the same columns from the feature list
+        feature_df.drop(['biggestLeadScore', 'biggestScoringRunScore', 
+                          'minutes', 'minutesCalculated','timeLeading'],
+                        axis=1, inplace=True)
 
 
         
@@ -155,13 +160,13 @@ def differential_ratio_stats(team_df, Team_abbreviation, Team_identifier):
         df_ratio = pd.DataFrame(index=team_df.index)
 
         # Iterate over the column names in features_df to generate differential and ratio features
-        for feature in team_df.columns:
+        for feature in feature_df.columns:
             diff_col_name = f"{feature}_diff"
             ratio_col_name = f"{feature}_ratio"
             
             # Calculate differential and ratio values
-            diff_values = team_df[f'{feature}'] - team_df[f'{feature}']
-            ratio_values = team_df[f'{feature}'] / (team_df[f'{feature}'] + np.finfo(float).eps)  # Adding epsilon to avoid division by zero
+            diff_values = team_df[f'TeamA_Selected_{feature}'] - team_df[f'TeamA_Opponent_{feature}']
+            ratio_values = team_df[f'TeamA_Selected_{feature}'] / (team_df[f'TeamA_Opponent_{feature}'] + np.finfo(float).eps)  # Adding epsilon to avoid division by zero
             
             # Store the calculated values in the respective DataFrames
             df_diff[diff_col_name] = diff_values
@@ -170,25 +175,29 @@ def differential_ratio_stats(team_df, Team_abbreviation, Team_identifier):
         
         df_diff_ratio = pd.concat([df_diff, df_ratio], axis=1)
 
-        df_diff_ratio[f'{Team_identifier_value}_Selected_WL'] = (df_diff_ratio[f'{Team_identifier_value}_Selected_points_diff'] > 0).astype(int)
+        df_diff_ratio['Selected_WL'] = (df_diff_ratio['points_diff'] > 0).astype(int)
+
+        final_df = df_diff_ratio.add_prefix('TeamA_')
 
 
-    if Team_identifier == 1:
+
+    elif Team_identifier == 1:
 
         Team_identifier_value = 'TeamB'
         # Drop the columns that can't be used in the model
-        team_df.drop([f'{Team_identifier_value}_{Team_abbreviation}', f'{Team_identifier_value}_Opponent', f'{Team_identifier_value}_WL', 
+        team_df.drop([f'{Team_identifier_value}_{Team_abbreviation}', f'{Team_identifier_value}_Opponent', 
                                 f'{Team_identifier_value}_Selected_biggestLeadScore', f'{Team_identifier_value}_Selected_biggestScoringRunScore', f'{Team_identifier_value}_Selected_minutes', 
-                                f'{Team_identifier_value}_Selected_minutesCalculated', f'{Team_identifier_value}_Selected_timeLeading',
-                                f'{Team_identifier_value}_{Team_abbreviation}', f'{Team_identifier_value}_Opponent', f'{Team_identifier_value}_WL', 
+                                f'{Team_identifier_value}_Selected_minutesCalculated', f'{Team_identifier_value}_Selected_timeLeading', 
                                 f'{Team_identifier_value}_Opponent_biggestLeadScore', f'{Team_identifier_value}_Opponent_biggestScoringRunScore', f'{Team_identifier_value}_Opponent_minutes', 
                                 f'{Team_identifier_value}_Opponent_minutesCalculated', f'{Team_identifier_value}_Opponent_timeLeading'], 
         axis=1, inplace=True)
+
+        # team_df.drop([f'{Team_abbreviation}','Opponent','WL'])
         
         
-        # # Drop the same columns from the feature list
-        # features_df.drop([f'Selected_{Team_abbreviation}', 'Selected_WL', 'Selected_Opponent', 'Selected_biggestLeadScore', 'Selected_biggestScoringRunScore', 
-        #                   'Selected_minutes', 'Selected_minutesCalculated', 'Selected_timeLeading'],
+        # Drop the same columns from the feature list
+        # feature_df.drop(['biggestLeadScore', 'biggestScoringRunScore', 
+        #                   'minutes', 'minutesCalculated', 'timeLeading'],
         #                 axis=1, inplace=True)
 
 
@@ -197,14 +206,17 @@ def differential_ratio_stats(team_df, Team_abbreviation, Team_identifier):
         df_diff = pd.DataFrame(index=team_df.index)
         df_ratio = pd.DataFrame(index=team_df.index)
 
+
+
+        # ACCIDENTALLY LOOPING OVER ALL FEATURES INSTEAD OF HALF OF THEM
         # Iterate over the column names in features_df to generate differential and ratio features
-        for feature in team_df.columns:
+        for feature in feature_df.columns:
             diff_col_name = f"{feature}_diff"
             ratio_col_name = f"{feature}_ratio"
             
             # Calculate differential and ratio values
-            diff_values = team_df[f'{feature}'] - team_df[f'{feature}']
-            ratio_values = team_df[f'{feature}'] / (team_df[f'{feature}'] + np.finfo(float).eps)  # Adding epsilon to avoid division by zero
+            diff_values = team_df[f'TeamB_Selected_{feature}'] - team_df[f'TeamB_Opponent_{feature}']
+            ratio_values = team_df[f'TeamB_Selected_{feature}'] / (team_df[f'TeamB_Opponent_{feature}'] + np.finfo(float).eps)  # Adding epsilon to avoid division by zero
             
             # Store the calculated values in the respective DataFrames
             df_diff[diff_col_name] = diff_values
@@ -213,7 +225,10 @@ def differential_ratio_stats(team_df, Team_abbreviation, Team_identifier):
         
         df_diff_ratio = pd.concat([df_diff, df_ratio], axis=1)
 
-        df_diff_ratio[f'{Team_identifier_value}_Selected_WL'] = (df_diff_ratio[f'{Team_identifier_value}_Selected_points_diff'] > 0).astype(int)
+        df_diff_ratio['Selected_WL'] = (df_diff_ratio['points_diff'] > 0).astype(int)
+
+        final_df = df_diff_ratio.add_prefix('TeamB_')
+
         
 
     # # Calculate the season-wide average of differential and ratio features
@@ -223,19 +238,18 @@ def differential_ratio_stats(team_df, Team_abbreviation, Team_identifier):
     # # Output the average features for review
     # print(average_features_df)
 
-    print(df_diff_ratio.columns)
-
-    return df_diff_ratio
+    print(final_df.columns)
 
 
+    return final_df
 
 
-def remove_prefix(dataframe):
 
-    df = dataframe
 
-    # Prefix to remove
-    prefix_to_remove = 'TeamA_'
+def remove_prefix(dataframe, prefix_to_remove):
+
+    df = dataframe.copy()
+
 
     # Remove the prefix from all column names
     df.columns = [col.replace(prefix_to_remove, '') for col in df.columns]

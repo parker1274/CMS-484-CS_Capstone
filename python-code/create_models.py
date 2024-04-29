@@ -40,7 +40,7 @@ def create_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, num
     else:
         print("The model type entered was not found.")
 
-create_model("classifier", "BOS", "NYK", "2023-24", 3)
+# create_model("classifier", "BOS", "NYK", "2023-24", 1)
 
 
 def create_multiple_models(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons):

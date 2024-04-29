@@ -19,16 +19,16 @@ from data_collection.feature_avgs import feature_avgs, season_avgs
 from data_collection.season_stats import all_game_stats_export
 from json_main import get_recent_games_stats, make_prediction
 
-model_type = sys.argv[1]
-TeamA_abbreviation = sys.argv[2]
-TeamB_abbreviation = sys.argv[3]
-season = sys.argv[4]
-try:
-    number_seasons = int(sys.argv[5])
-except (ValueError, IndexError) as e:
-    print(f"Error converting input to integer: {e}")
-    sys.exit(1)
-number_past_games = int(sys.argv[6])
+# model_type = sys.argv[1]
+# TeamA_abbreviation = sys.argv[2]
+# TeamB_abbreviation = sys.argv[3]
+# season = sys.argv[4]
+# try:
+#     number_seasons = int(sys.argv[5])
+# except (ValueError, IndexError) as e:
+#     print(f"Error converting input to integer: {e}")
+#     sys.exit(1)
+# number_past_games = int(sys.argv[6])
 
 # print(TeamA_abbreviation)
 
@@ -36,11 +36,11 @@ def run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number
 
 
     # print(model_type)
-    # print(TeamA_abbreviation)
+    print(TeamA_abbreviation)
 
     # Check which model is to be created
     if (model_type == "gamePrediction"):
-        # print(f"Running a classifier model for {TeamA_abbreviation}")
+        print(f"Running a classifier model for {TeamA_abbreviation}")
 
         model_type = "classifier"
 
@@ -64,7 +64,7 @@ def run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number
 
 def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games):
 
-    model_path = f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/model_creation/{model_type}_models/{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DT_model.joblib"
+    model_path = f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/model_creation/{model_type}_models/NEW_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DT_model.joblib"
 
     model = load(model_path)
 
@@ -80,16 +80,20 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
 
     # ADD MORE SEASONS -------
 
-    pickle_file_path = f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/pickle_dataframes/df_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season.pkl"
+    pickle_file_path = f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/pickle_dataframes/NEW_df_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season.pkl"
     df = pd.read_pickle(pickle_file_path)
 
-    df.drop(['TeamA_WL'], axis=1, inplace=True)
+    # df.drop(['TeamA_Selected_WL'], axis=1, inplace=True)
 
-    # print(df)
+    print("the dataframe below")
+    print(df)
+    # df.to_csv('full_dataframe.xlsx', index=False)
+
 
     feature_avg_df = feature_avgs(df, number_past_games)
 
-    # print(feature_avg_df)
+    print("Feature avgs:")
+    print(feature_avg_df)
 
 
     # For the input data for a game outcome prediction, perhaps input the average of their stats over a given poeriod of time.
@@ -113,24 +117,30 @@ def process_game_outcome_model(model_type, TeamA_abbreviation, TeamB_abbreviatio
 
 
     # # Drop the columns that aren't features the model was trained on
-    input_data_df.drop(['pointsAgainst_diff', 'pointsAgainst_ratio', 'points_diff', 'points_ratio'], axis=1, inplace=True)
+    # input_data_df.drop(['TeamA_Opponent_pointsAgainst_diff','TeamB_Selected_pointsAgainst_diff'], axis=1, inplace=True)
 
-    # print(input_data_df)
+    print(input_data_df)
+
+    input_data_df.drop(['TeamA_Selected_WL',], axis=1, inplace=True)
+
 
 
     # Make predictions and retrieve probabilities
     prediction = model.predict(input_data_df)
     probabilities = model.predict_proba(input_data_df)
 
-    # # Output the model's prediction
-    # if prediction[0] == 1:
-    #     print(f"The model predicts a win for the team with a probability of {probabilities[0][1]:.2%}.")
-    # else:
-    #     print(f"The model predicts a loss for the team with a probability of {probabilities[0][0]:.2%}.")
+    # Output the model's prediction
+    if prediction[0] == 1:
+        print(f"The model predicts a win for the team with a probability of {probabilities[0][1]:.2%}.")
+    else:
+        print(f"The model predicts a loss for the team with a probability of {probabilities[0][0]:.2%}.")
 
-    # # Display both probabilities for clarity
-    # print(f"Win Probability: {probabilities[0][1]:.8%}")
-    # print(f"Loss Probability: {probabilities[0][0]:.8%}")
+    print(prediction)
+    print(probabilities)
+
+    # Display both probabilities for clarity
+    print(f"Win Probability: {probabilities[0][1]:.8%}")
+    print(f"Loss Probability: {probabilities[0][0]:.8%}")
 
     # print(probabilities)
 
@@ -299,6 +309,7 @@ def process_controllable_model_request(TeamA_abbreviation, TeamB_abbreviation, s
     print(json.dumps(result_data))
 
 
+# run_model("classifier", "BOS", "NYK", "2023-24", 1, 15)
 
 
-run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)
+# run_model(model_type, TeamA_abbreviation, TeamB_abbreviation, season, number_seasons, number_past_games)

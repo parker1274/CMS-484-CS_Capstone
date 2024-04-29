@@ -15,7 +15,8 @@ def feature_avgs(game_dataframe, num_previous_games):
 
     selected_games_df = df.iloc[:num_previous_games]
 
-    # print(selected_games_df)
+    print("Selected games")
+    print(selected_games_df)
 
 
     average_values_df = selected_games_df.select_dtypes(include=['number']).mean()

@@ -35,27 +35,53 @@ def game_outcome_model(TeamA_abbreviation, TeamB_abbreviation, season, number_se
     TeamA_df = multi_season_data_export(TeamA_abbreviation, season, number_seasons, TeamA_identifier)
     print(list(TeamA_df.columns))
 
+    TeamA_df.drop
+
+    
+
+    # Select columns that start with 'sales'
+    selected_names = remove_prefix(TeamA_df, 'TeamA_')
+    # print(list(TeamA_df.columns))
+
+    # print("Selected")
+    # print(list(selected_names.columns))
+
+    cols_to_select = selected_names.columns.str.startswith('Selected_')
+    selected_columns = selected_names.loc[:, cols_to_select]
+    feature_df = remove_prefix(selected_columns, 'Selected_')
+
+
+    # print("Features")
+    # print(list(feature_df.columns))
+
     TeamB_df = multi_season_data_export(TeamB_abbreviation, season, number_seasons, TeamB_identifier)
-    print(list(TeamB_df.columns))
+    # print(list(TeamB_df.columns))
+
+
+
+
 
 
     print("Team A differential df")
-    TeamA_diff_ratio_df = differential_ratio_stats(TeamA_df, TeamA_abbreviation, TeamA_identifier)
+    TeamA_diff_ratio_df = differential_ratio_stats(TeamA_df, feature_df, TeamA_abbreviation, TeamA_identifier)
     print(TeamA_diff_ratio_df)
 
     print("Team B differential df")
-    TeamB_diff_ratio_df = differential_ratio_stats(TeamB_df, TeamB_abbreviation, TeamB_identifier)
+    TeamB_diff_ratio_df = differential_ratio_stats(TeamB_df, feature_df, TeamB_abbreviation, TeamB_identifier)
     print(TeamB_diff_ratio_df)
 
 
-    # # Now you can concatenate them
-    # combined_df = pd.concat([TeamA, TeamB], axis=1)
+
+    # Now you can concatenate them
+    combined_df = pd.concat([TeamA_diff_ratio_df, TeamB_diff_ratio_df], axis=1)
+
+
 
 
     # feature_names = remove_prefix(TeamA)
 
-    # print("These are the combined_features:")
-    # print(combined_df)
+    print("These are the combined_features:")
+    print(combined_df)
 
     # print("These are the feature_names:")
     # print(feature_names)
@@ -69,59 +95,79 @@ def game_outcome_model(TeamA_abbreviation, TeamB_abbreviation, season, number_se
     # # Convert all the stats to differential and ration features
     # df_diff_ratio = differential_ratio_features(combined_df, feature_names, TeamA_abbreviation, TeamB_abbreviation)
 
+    all_columns = combined_df.columns.tolist()
+    print(all_columns)
 
 
 
 
 
-    df_diff_ratio['TeamA_WL'] = (combined_df['TeamA_points'] > combined_df['TeamB_points']).astype(int)
+    # df_diff_ratio['TeamA_WL'] = (combined_df['TeamA_points'] > combined_df['TeamB_points']).astype(int)
+
+    combined_df.drop(['TeamA_points_ratio', 'TeamB_points_ratio','TeamA_points_diff', 'TeamB_points_diff',
+                      'TeamA_pointsAgainst_diff','TeamB_pointsAgainst_diff', 
+                      'TeamA_pointsAgainst_ratio','TeamB_pointsAgainst_ratio',
+                      'TeamA_fieldGoalsEffectiveAdjusted_diff','TeamB_fieldGoalsEffectiveAdjusted_diff',
+                      'TeamA_fieldGoalsEffectiveAdjusted_ratio','TeamB_fieldGoalsEffectiveAdjusted_ratio',
+                      'TeamA_trueShootingPercentage_ratio', 'TeamB_trueShootingPercentage_ratio',
+                      'TeamA_trueShootingPercentage_diff', 'TeamB_trueShootingPercentage_diff'], axis=1, inplace=True)
+
+    # Get column names from each DataFrame
+    all_columns = combined_df.columns.tolist()
+
+    all_columns.remove('TeamA_Selected_WL')
+
+    print(all_columns)
 
 
-
-
-    features = df_diff_ratio[['assists_diff', 'assistsTurnoverRatio_diff', 'benchPoints_diff', 'biggestLead_diff', 'biggestScoringRun_diff', 'blocks_diff', 'blocksReceived_diff', 'fastBreakPointsAttempted_diff', 'fastBreakPointsMade_diff',    'fastBreakPointsPercentage_diff', 'fieldGoalsAttempted_diff', 'fieldGoalsEffectiveAdjusted_diff', 'fieldGoalsMade_diff', 'fieldGoalsPercentage_diff',
-                            'foulsOffensive_diff', 'foulsDrawn_diff', 'foulsPersonal_diff', 'foulsTeam_diff', 'foulsTechnical_diff', 'foulsTeamTechnical_diff', 'freeThrowsAttempted_diff', 'freeThrowsMade_diff', 'freeThrowsPercentage_diff', 'leadChanges_diff', 'pointsFastBreak_diff', 'pointsFromTurnovers_diff', 'pointsInThePaint_diff', 'pointsInThePaintAttempted_diff', 
-                            'pointsInThePaintMade_diff', 'pointsInThePaintPercentage_diff', 'pointsSecondChance_diff', 'reboundsDefensive_diff', 'reboundsOffensive_diff', 'reboundsPersonal_diff', 'reboundsTeam_diff', 'reboundsTeamDefensive_diff',    'reboundsTeamOffensive_diff', 'reboundsTotal_diff', 'secondChancePointsAttempted_diff',    'secondChancePointsMade_diff', 'secondChancePointsPercentage_diff', 
-                            'steals_diff',    'threePointersAttempted_diff', 'threePointersMade_diff', 'threePointersPercentage_diff',    'timesTied_diff', 'trueShootingAttempts_diff', 'trueShootingPercentage_diff', 'turnovers_diff',    'turnoversTeam_diff', 'turnoversTotal_diff', 'twoPointersAttempted_diff', 'twoPointersMade_diff',    'twoPointersPercentage_diff',    'assists_ratio', 'assistsTurnoverRatio_ratio',
-                            'benchPoints_ratio', 'biggestLead_ratio', 'biggestScoringRun_ratio',    'blocks_ratio', 'blocksReceived_ratio', 'fastBreakPointsAttempted_ratio', 'fastBreakPointsMade_ratio',    'fastBreakPointsPercentage_ratio', 'fieldGoalsAttempted_ratio', 'fieldGoalsEffectiveAdjusted_ratio',    'fieldGoalsMade_ratio', 'fieldGoalsPercentage_ratio', 'foulsOffensive_ratio', 'foulsDrawn_ratio',
-                            'foulsPersonal_ratio', 'foulsTeam_ratio', 'foulsTechnical_ratio', 'foulsTeamTechnical_ratio',    'freeThrowsAttempted_ratio', 'freeThrowsMade_ratio', 'freeThrowsPercentage_ratio', 'leadChanges_ratio', 'pointsFastBreak_ratio', 'pointsFromTurnovers_ratio',    'pointsInThePaint_ratio', 'pointsInThePaintAttempted_ratio', 'pointsInThePaintMade_ratio',
-                            'pointsInThePaintPercentage_ratio', 'pointsSecondChance_ratio', 'reboundsDefensive_ratio',    'reboundsOffensive_ratio', 'reboundsPersonal_ratio', 'reboundsTeam_ratio', 'reboundsTeamDefensive_ratio',    'reboundsTeamOffensive_ratio', 'reboundsTotal_ratio', 'secondChancePointsAttempted_ratio',    'secondChancePointsMade_ratio', 'secondChancePointsPercentage_ratio', 'steals_ratio',   
-                            'threePointersAttempted_ratio', 'threePointersMade_ratio', 'threePointersPercentage_ratio',    'timesTied_ratio', 'trueShootingAttempts_ratio', 'trueShootingPercentage_ratio', 'turnovers_ratio',    'turnoversTeam_ratio', 'turnoversTotal_ratio', 'twoPointersAttempted_ratio', 'twoPointersMade_ratio',    'twoPointersPercentage_ratio']]
-
-    target = df_diff_ratio['TeamA_WL']
+    features = combined_df[all_columns]
+    target = combined_df['TeamA_Selected_WL']
 
 
 
 
     # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.1, random_state=42)
 
     # Train the decision tree
     tree = DecisionTreeClassifier(max_depth=8, random_state=42)
     tree.fit(X_train, y_train)
 
+    print()
+    print("new threshold")
+    probabilities = tree.predict_proba(X_test)[:, 1]
+
+    # Define a new threshold
+    new_threshold = 0.5  # Lowering the threshold to classify more items as positive
+
+    # Apply the threshold
+    predictions = (probabilities > new_threshold).astype(int)
+
+
     # Predict and evaluate
-    predictions = tree.predict(X_test)
+    # predictions = tree.predict(X_test)
     accuracy = accuracy_score(y_test, predictions)
     print(f"Model Accuracy: {accuracy}\n")
 
+    # # Save the model to a file
+    # dump(tree, f"./model_creation/classifier_models/NEW_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DT_model.joblib")
+
+
+
+    # Visualize the decision tree
+    plt.figure(figsize=(20, 10))
+    plot_tree(tree, filled=True, feature_names=features.columns, class_names=['Loss', 'Win'], rounded=True, fontsize=12)
+
+    # Extract the season from the CSV filename
+    output_filename = f"./model_creation/models_png/{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DTC.png"
+
+    # Save the figure with the new filename
+    plt.savefig(output_filename)
+
+    bestTree = grid_hyperparameter(features, X_train, X_test, y_train, y_test)
+    
     # Save the model to a file
-    dump(tree, f"./model_creation/classifier_models/{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DT_model.joblib")
-
-
-
-    # # Visualize the decision tree
-    # plt.figure(figsize=(20, 10))
-    # plot_tree(tree, filled=True, feature_names=features.columns, class_names=['Loss', 'Win'], rounded=True, fontsize=12)
-
-    # # Extract the season from the CSV filename
-    # output_filename = f"./model_creation/models_png/{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DTC.png"
-
-    # # Save the figure with the new filename
-    # plt.savefig(output_filename)
-
-    grid_hyperparameter(features, X_train, X_test, y_train, y_test)
-
+    dump(bestTree, f"./model_creation/classifier_models/NEW_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season_DT_model.joblib")
 
     # Record end time
     end_time = time.time()
@@ -137,11 +183,6 @@ def game_outcome_model(TeamA_abbreviation, TeamB_abbreviation, season, number_se
 
     print("Accuracy scores for each fold:", scores)
     print("Mean cross-validation accuracy:", scores.mean())
-
-
-
-
-
 
 
 
@@ -183,12 +224,15 @@ def game_outcome_model(TeamA_abbreviation, TeamB_abbreviation, season, number_se
     # plt.show()
 
 
+    # df_for_avgs = pd.concat([TeamA_df, TeamB_df], axis=1)
+
+
     def export_df_diff_ratio(dataframe):
 
-        dataframe.to_pickle(f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/pickle_dataframes/df_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season.pkl")
+        dataframe.to_pickle(f"/Users/jkran/code/school/CMS-484-CS_Capstone/python-code/pickle_dataframes/NEW_df_{TeamA_abbreviation}_{TeamB_abbreviation}_{season}_past_{number_seasons}_season.pkl")
 
 
-    export_df_diff_ratio(df_diff_ratio)
+    export_df_diff_ratio(combined_df)
 
 
 # game_outcome_model("BOS", "NYK", "2023-24", 3)

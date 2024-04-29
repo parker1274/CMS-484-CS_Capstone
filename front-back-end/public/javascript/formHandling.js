@@ -51,18 +51,23 @@ export function initFormHandling() {
     });
 
     function fetchPrediction(paramsInputString, team1, team2) {
-        const url = new URL('http://localhost:3000/prediction');
-        url.search = new URLSearchParams({ params: paramsInputString });
+        const url = 'https://qr7cldaha9.execute-api.us-east-1.amazonaws.com/';
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                resultDiv.innerHTML = buildContent(data, team1, team2);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                resultDiv.innerHTML = `<p>Error fetching prediction: ${error}</p>`;
-            });
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(paramsInputString)
+        })
+        .then(response => response.json())
+        .then(data => {
+            resultDiv.innerHTML = buildContent(data, team1, team2);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            resultDiv.innerHTML = '<p>Error fetching prediction.</p>';
+        });
     }
 
     function buildContent(data, team1, team2) {
