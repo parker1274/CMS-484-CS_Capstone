@@ -1,14 +1,15 @@
 export function initStatsScript() {
-    let currentStart = 0;
-    const limit = 5; // Adjust the number of records per fetch based on your preference
+    const start = 0;
+    let limit = 5; // Adjust the number of records per fetch based on your preference
 
     document.getElementById('fetchStats').addEventListener('click', function() {
-        currentStart = 0; // Reset start here for a fresh fetch
-        fetchData(currentStart, limit);
+        //start = 0; // Reset start here for a fresh fetch
+        fetchData(start, limit);
     });
 
     document.getElementById('loadMore').addEventListener('click', function() {
-        fetchData(currentStart, limit);
+        limit += 5; // Increase the limit here for the next fetch   
+        fetchData(start, limit);
     });
 
     function fetchData(start, limit) {
